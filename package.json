@@ -1,0 +1,35 @@
+{
+  "name": "carbon-connect-js",
+  "version": "0.0.1",
+  "description": "A headless API wrapper of carbon.ai",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hubbleai/carbon-connect-js.git"
+  },
+  "author": "carbon.ai",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/hubbleai/carbon-connect-js/issues"
+  },
+  "homepage": "https://github.com/hubbleai/carbon-connect-js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.1",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.3",
+    "rollup": "^3.25.1",
+    "typescript": "^5.2.2"
+  }
+}
