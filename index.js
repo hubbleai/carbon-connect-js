@@ -1,6 +1,6 @@
 import { allowedFileTypes } from './constants';
 
-const generateAccessToken = async () => {
+const generateAccessToken = async (apiKey, customerId) => {
   try {
     const accessTokenResponse = await fetch(
       `${process.env.NEXT_PUBLIC_CARBON_API_BASE_URL}/auth/v1/access_token`,
@@ -152,14 +152,9 @@ const uploadFilesToCarbon = async (
   files,
   chunkSize = 1500,
   chunkOverlap = 20,
-  tags = {},
   skipEmbeddingGeneration = false
 ) => {
   try {
-    // const filesConfig = processedIntegrations.find(
-    //   (integration) => integration.id === 'LOCAL_FILES'
-    // );
-
     if (files.length === 0) {
       return {
         successfulUploads: [],
