@@ -32,7 +32,7 @@ const generateAccessToken = async (apiKey, customerId) => {
 
 const getWhiteLabelData = async (accessToken) => {
   const whiteLabelingResponse = await fetch(
-    `${BASE_URL[environment]}/auth/v1/white_labeling`,
+    `https://api.carbon.ai/auth/v1/white_labeling`,
     {
       method: 'GET',
       headers: {
@@ -52,7 +52,7 @@ const getWhiteLabelData = async (accessToken) => {
 const getUserConnections = async (accessToken) => {
   try {
     const userIntegrationsResponse = await fetch(
-      `${BASE_URL[environment]}/integrations/`,
+      `https://api.carbon.ai/integrations/`,
       {
         method: 'GET',
         headers: {
@@ -100,7 +100,7 @@ const generateOauthurl = async (
 ) => {
   try {
     const oAuthURLResponse = await fetch(
-      `${BASE_URL[environment]}/integrations/oauth_url`,
+      `https://api.carbon.ai/integrations/oauth_url`,
       {
         method: 'POST',
         headers: {
@@ -188,7 +188,7 @@ const uploadFilesToCarbon = async (
           }
 
           const uploadResponse = await fetch(
-            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
+            `https://api.carbon.ai/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
             {
               method: 'POST',
               body: formData,
@@ -252,7 +252,7 @@ const uploadFilesToCarbon = async (
 
 const updateTags = async (accessToken, fileId, tags) => {
   const appendTagsResponse = await fetch(
-    `${BASE_URL[environment]}/create_user_file_tags`,
+    `https://api.carbon.ai/create_user_file_tags`,
     {
       method: 'POST',
       body: JSON.stringify({
@@ -293,7 +293,7 @@ const handleFetchSitemapUrls = async (accessToken, sitemapUrl) => {
     }
 
     const response = await fetch(
-      `${BASE_URL[environment]}/process_sitemap?url=${sitemapUrl}`,
+      `https://api.carbon.ai/process_sitemap?url=${sitemapUrl}`,
       {
         method: 'GET',
         headers: {
@@ -370,7 +370,7 @@ const submitScrapeRequest = async (
     }));
 
     const uploadResponse = await carbonFetch(
-      `${BASE_URL[environment]}/web_scrape`,
+      `https://api.carbon.ai/web_scrape`,
       {
         method: 'POST',
         headers: {
