@@ -1,10 +1,10 @@
 import { allowedFileTypes, BASE_URL } from './constants';
 
-const generateAccessToken = async (
+const generateAccessToken = async ({
   apiKey,
   customerId,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     const accessTokenResponse = await fetch(
       `${BASE_URL[environment]}/auth/v1/access_token`,
@@ -34,7 +34,10 @@ const generateAccessToken = async (
   }
 };
 
-const getWhiteLabelData = async (accessToken, environment = 'PRODUCTION') => {
+const getWhiteLabelData = async ({
+  accessToken,
+  environment = 'PRODUCTION',
+}) => {
   const whiteLabelingResponse = await fetch(
     `${BASE_URL[environment]}/auth/v1/white_labeling`,
     {
@@ -53,7 +56,10 @@ const getWhiteLabelData = async (accessToken, environment = 'PRODUCTION') => {
   };
 };
 
-const getUserConnections = async (accessToken, environment = 'PRODUCTION') => {
+const getUserConnections = async ({
+  accessToken,
+  environment = 'PRODUCTION',
+}) => {
   try {
     const userIntegrationsResponse = await fetch(
       `${BASE_URL[environment]}/integrations/`,
@@ -94,15 +100,15 @@ const getUserConnections = async (accessToken, environment = 'PRODUCTION') => {
   }
 };
 
-const generateOauthurl = async (
+const generateOauthurl = async ({
   accessToken,
   integrationName,
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   tags = {},
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     const oAuthURLResponse = await fetch(
       `${BASE_URL[environment]}/integrations/oauth_url`,
@@ -152,14 +158,14 @@ const generateOauthurl = async (
   }
 };
 
-const uploadFiles = async (
+const uploadFiles = async ({
   accessToken,
   files,
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     if (files.length === 0) {
       return {
@@ -256,14 +262,14 @@ const uploadFiles = async (
   }
 };
 
-const uploadText = async (
+const uploadText = async ({
   accessToken,
   textContent,
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     if (textContent.length === 0) {
       return {
@@ -355,12 +361,12 @@ const uploadText = async (
   }
 };
 
-const updateTags = async (
+const updateTags = async ({
   accessToken,
   fileId,
   tags,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   const appendTagsResponse = await fetch(
     `${BASE_URL[environment]}/create_user_file_tags`,
     {
@@ -392,11 +398,11 @@ const updateTags = async (
   }
 };
 
-const processSitemapUrl = async (
+const processSitemapUrl = async ({
   accessToken,
   sitemapUrl,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     if (!sitemapUrl) {
       return {
@@ -443,7 +449,7 @@ const processSitemapUrl = async (
   }
 };
 
-const submitScrapeRequest = async (
+const submitScrapeRequest = async ({
   accessToken,
   urls,
   recursionDepth = 1,
@@ -451,8 +457,8 @@ const submitScrapeRequest = async (
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
-  environment = 'PRODUCTION'
-) => {
+  environment = 'PRODUCTION',
+}) => {
   try {
     const urlPattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol
