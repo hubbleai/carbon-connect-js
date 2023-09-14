@@ -1,9 +1,13 @@
-import { allowedFileTypes } from './constants';
+import { allowedFileTypes, BASE_URL } from './constants';
 
-const generateAccessToken = async (apiKey, customerId) => {
+const generateAccessToken = async (
+  apiKey,
+  customerId,
+  environment = 'PRODUCTION'
+) => {
   try {
     const accessTokenResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_CARBON_API_BASE_URL}/auth/v1/access_token`,
+      `${BASE_URL[environment]}/auth/v1/access_token`,
       {
         method: 'GET',
         headers: {
@@ -30,9 +34,9 @@ const generateAccessToken = async (apiKey, customerId) => {
   }
 };
 
-const getWhiteLabelData = async (accessToken) => {
+const getWhiteLabelData = async (accessToken, environment = 'PRODUCTION') => {
   const whiteLabelingResponse = await fetch(
-    `https://api.carbon.ai/auth/v1/white_labeling`,
+    `${BASE_URL[environment]}/auth/v1/white_labeling`,
     {
       method: 'GET',
       headers: {
@@ -49,10 +53,10 @@ const getWhiteLabelData = async (accessToken) => {
   };
 };
 
-const getUserConnections = async (accessToken) => {
+const getUserConnections = async (accessToken, environment = 'PRODUCTION') => {
   try {
     const userIntegrationsResponse = await fetch(
-      `https://api.carbon.ai/integrations/`,
+      `${BASE_URL[environment]}/integrations/`,
       {
         method: 'GET',
         headers: {
@@ -96,11 +100,12 @@ const generateOauthurl = async (
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
-  tags = {}
+  tags = {},
+  environment = 'PRODUCTION'
 ) => {
   try {
     const oAuthURLResponse = await fetch(
-      `https://api.carbon.ai/integrations/oauth_url`,
+      `${BASE_URL[environment]}/integrations/oauth_url`,
       {
         method: 'POST',
         headers: {
@@ -147,12 +152,13 @@ const generateOauthurl = async (
   }
 };
 
-const uploadFilesToCarbon = async (
+const uploadFiles = async (
   accessToken,
   files,
   chunkSize = 1500,
   chunkOverlap = 20,
-  skipEmbeddingGeneration = false
+  skipEmbeddingGeneration = false,
+  environment = 'PRODUCTION'
 ) => {
   try {
     if (files.length === 0) {
@@ -188,7 +194,7 @@ const uploadFilesToCarbon = async (
           }
 
           const uploadResponse = await fetch(
-            `https://api.carbon.ai/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
+            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
             {
               method: 'POST',
               body: formData,
@@ -250,9 +256,113 @@ const uploadFilesToCarbon = async (
   }
 };
 
-const updateTags = async (accessToken, fileId, tags) => {
+const uploadText = async (
+  accessToken,
+  textContent,
+  chunkSize = 1500,
+  chunkOverlap = 20,
+  skipEmbeddingGeneration = false,
+  environment = 'PRODUCTION'
+) => {
+  try {
+    if (textContent.length === 0) {
+      return {
+        data: null,
+        error: {
+          message: 'No text has been provided to upload.',
+        },
+        status: 400,
+      };
+    }
+
+    await Promise.all(
+      files.map(async (file, index) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          const fileType = file.name.split('.').pop();
+
+          const isFileSupport = allowedFileTypes.find(
+            (configuredType) => configuredType === fileType
+          );
+
+          if (!isFileSupport) {
+            failedUploads.push(file.name);
+            return;
+          }
+
+          const uploadResponse = await fetch(
+            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
+            {
+              method: 'POST',
+              body: formData,
+              headers: {
+                Authorization: `Token ${accessToken}`,
+              },
+            }
+          );
+
+          if (uploadResponse.status === 200) {
+            const uploadResponseData = await uploadResponse.json();
+            successfulUploads.push(uploadResponseData);
+          } else {
+            const errorData = await uploadResponse.json(); // Get the error response body
+
+            failedUploads.push({
+              fileName: file.name,
+              message: errorData.message || 'Failed to upload file.',
+            });
+          }
+        } catch (error) {
+          failedUploads.push({
+            fileName: file.name,
+            message: errorData.message || 'Failed to upload file.',
+          });
+        }
+      })
+    );
+
+    const errorObject = null;
+    if (failedUploads.length > 0) {
+      errorObject = {
+        message: 'Failed to upload some files.',
+        count: failedUploads.length,
+        failedUploads,
+      };
+    }
+    return {
+      data: {
+        count: successfulUploads.length,
+        successfulUploads,
+      },
+      error: errorObject,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      data: {
+        count: 0,
+        successfulUploads: [],
+      },
+      error: {
+        message: error.message || 'Failed to upload files.',
+        count: files.length,
+        failedUploads: files.map((file) => file.name),
+      },
+      status: 400,
+    };
+  }
+};
+
+const updateTags = async (
+  accessToken,
+  fileId,
+  tags,
+  environment = 'PRODUCTION'
+) => {
   const appendTagsResponse = await fetch(
-    `https://api.carbon.ai/create_user_file_tags`,
+    `${BASE_URL[environment]}/create_user_file_tags`,
     {
       method: 'POST',
       body: JSON.stringify({
@@ -282,7 +392,11 @@ const updateTags = async (accessToken, fileId, tags) => {
   }
 };
 
-const handleFetchSitemapUrls = async (accessToken, sitemapUrl) => {
+const processSitemapUrl = async (
+  accessToken,
+  sitemapUrl,
+  environment = 'PRODUCTION'
+) => {
   try {
     if (!sitemapUrl) {
       return {
@@ -293,7 +407,7 @@ const handleFetchSitemapUrls = async (accessToken, sitemapUrl) => {
     }
 
     const response = await fetch(
-      `https://api.carbon.ai/process_sitemap?url=${sitemapUrl}`,
+      `${BASE_URL[environment]}/process_sitemap?url=${sitemapUrl}`,
       {
         method: 'GET',
         headers: {
@@ -336,7 +450,8 @@ const submitScrapeRequest = async (
   maxPagesToScrape = 1,
   chunkSize = 1500,
   chunkOverlap = 20,
-  skipEmbeddingGeneration = false
+  skipEmbeddingGeneration = false,
+  environment = 'PRODUCTION'
 ) => {
   try {
     const urlPattern = new RegExp(
@@ -370,7 +485,7 @@ const submitScrapeRequest = async (
     }));
 
     const uploadResponse = await carbonFetch(
-      `https://api.carbon.ai/web_scrape`,
+      `${BASE_URL[environment]}/web_scrape`,
       {
         method: 'POST',
         headers: {
@@ -405,8 +520,8 @@ export {
   getWhiteLabelData,
   getUserConnections,
   generateOauthurl,
-  uploadFilesToCarbon,
+  uploadFiles,
   updateTags,
-  handleFetchSitemapUrls,
+  processSitemapUrl,
   submitScrapeRequest,
 };
