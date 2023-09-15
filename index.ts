@@ -1,10 +1,36 @@
-import { allowedFileTypes, BASE_URL } from './constants';
+// import { allowedFileTypes, BASE_URL } from './constants';
+import {
+  AccessTokenParams,
+  AccessTokenResponse,
+  WhiteLabelDataParams,
+  WhiteLabelDataResponse,
+  UserConnectionsParams,
+  UserConnectionsResponse,
+  GenerateOAuthURLParams,
+  GenerateOAuthURLResponse,
+  UploadFilesParams,
+  UploadFilesResponse,
+  UpdateTagsParams,
+  UpdateTagsResponse,
+  ProcessSitemapUrlParams,
+  ProcessSitemapUrlResponse,
+  SubmitScrapeRequestParams,
+  SubmitScrapeRequestResponse,
+} from './types';
+
+export const allowedFileTypes = ['pdf', 'docx', 'txt', 'csv', 'md', 'pptx'];
+
+export const BASE_URL: Record<string, string> = {
+  PRODUCTION: 'https://api.carbon.ai',
+  DEVELOPMENT: 'https://api.dev.carbon.ai',
+  LOCAL: 'http://localhost:8000',
+};
 
 const generateAccessToken = async ({
   apiKey,
   customerId,
   environment = 'PRODUCTION',
-}) => {
+}: AccessTokenParams): Promise<AccessTokenResponse> => {
   try {
     const accessTokenResponse = await fetch(
       `${BASE_URL[environment]}/auth/v1/access_token`,
@@ -18,11 +44,19 @@ const generateAccessToken = async ({
       }
     );
 
-    if (accessTokenResponse.status === 200 && accessTokenResponse.data) {
+    const responseData = await accessTokenResponse.json();
+
+    if (accessTokenResponse.status === 200 && responseData) {
       return {
         status: 200,
-        data: accessTokenResponse.data,
+        data: responseData,
         error: null,
+      };
+    } else {
+      return {
+        status: accessTokenResponse.status,
+        data: null,
+        error: responseData.error || 'Unexpected error occurred.',
       };
     }
   } catch (err) {
@@ -37,7 +71,7 @@ const generateAccessToken = async ({
 const getWhiteLabelData = async ({
   accessToken,
   environment = 'PRODUCTION',
-}) => {
+}: WhiteLabelDataParams): Promise<WhiteLabelDataResponse> => {
   const whiteLabelingResponse = await fetch(
     `${BASE_URL[environment]}/auth/v1/white_labeling`,
     {
@@ -59,7 +93,7 @@ const getWhiteLabelData = async ({
 const getUserConnections = async ({
   accessToken,
   environment = 'PRODUCTION',
-}) => {
+}: UserConnectionsParams): Promise<UserConnectionsResponse> => {
   try {
     const userIntegrationsResponse = await fetch(
       `${BASE_URL[environment]}/integrations/`,
@@ -73,7 +107,7 @@ const getUserConnections = async ({
 
     if (userIntegrationsResponse.status === 200) {
       const responseBody = await userIntegrationsResponse.json();
-      const userConnections = responseBody['active_integrations'];
+      const userConnections: any = responseBody['active_integrations'];
 
       return {
         connections: userConnections,
@@ -89,7 +123,7 @@ const getUserConnections = async ({
         status: userIntegrationsResponse.status,
       };
     }
-  } catch (error) {
+  } catch (error: any) {
     return {
       connections: [],
       error: {
@@ -108,7 +142,7 @@ const generateOauthurl = async ({
   skipEmbeddingGeneration = false,
   tags = {},
   environment = 'PRODUCTION',
-}) => {
+}: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
     const oAuthURLResponse = await fetch(
       `${BASE_URL[environment]}/integrations/oauth_url`,
@@ -165,11 +199,14 @@ const uploadFiles = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   environment = 'PRODUCTION',
-}) => {
+}: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
     if (files.length === 0) {
       return {
-        successfulUploads: [],
+        data: {
+          count: 0,
+          successfulUploads: [],
+        },
         error: {
           message: 'Please provide atleast a file to upload',
           count: 0,
@@ -179,8 +216,8 @@ const uploadFiles = async ({
       };
     }
 
-    const successfulUploads = [];
-    const failedUploads = [];
+    const successfulUploads = <any>[];
+    const failedUploads = <any>[];
 
     await Promise.all(
       files.map(async (file, index) => {
@@ -191,7 +228,7 @@ const uploadFiles = async ({
           const fileType = file.name.split('.').pop();
 
           const isFileSupport = allowedFileTypes.find(
-            (configuredType) => configuredType === fileType
+            (configuredType: string) => configuredType === fileType
           );
 
           if (!isFileSupport) {
@@ -211,7 +248,7 @@ const uploadFiles = async ({
           );
 
           if (uploadResponse.status === 200) {
-            const uploadResponseData = await uploadResponse.json();
+            const uploadResponseData: any = await uploadResponse.json();
             successfulUploads.push(uploadResponseData);
           } else {
             const errorData = await uploadResponse.json(); // Get the error response body
@@ -221,16 +258,16 @@ const uploadFiles = async ({
               message: errorData.message || 'Failed to upload file.',
             });
           }
-        } catch (error) {
+        } catch (error: any) {
           failedUploads.push({
             fileName: file.name,
-            message: errorData.message || 'Failed to upload file.',
+            message: error.message || 'Failed to upload file.',
           });
         }
       })
     );
 
-    const errorObject = null;
+    let errorObject = null;
     if (failedUploads.length > 0) {
       errorObject = {
         message: 'Failed to upload some files.',
@@ -241,12 +278,12 @@ const uploadFiles = async ({
     return {
       data: {
         count: successfulUploads.length,
-        successfulUploads,
+        successfulUploads: successfulUploads,
       },
       error: errorObject,
       status: 200,
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       data: {
         count: 0,
@@ -262,111 +299,111 @@ const uploadFiles = async ({
   }
 };
 
-const uploadText = async ({
-  accessToken,
-  textContent,
-  chunkSize = 1500,
-  chunkOverlap = 20,
-  skipEmbeddingGeneration = false,
-  environment = 'PRODUCTION',
-}) => {
-  try {
-    if (textContent.length === 0) {
-      return {
-        data: null,
-        error: {
-          message: 'No text has been provided to upload.',
-        },
-        status: 400,
-      };
-    }
+// const uploadText = async ({
+//   accessToken,
+//   textContent,
+//   chunkSize = 1500,
+//   chunkOverlap = 20,
+//   skipEmbeddingGeneration = false,
+//   environment = 'PRODUCTION',
+// }) => {
+//   try {
+//     if (textContent.length === 0) {
+//       return {
+//         data: null,
+//         error: {
+//           message: 'No text has been provided to upload.',
+//         },
+//         status: 400,
+//       };
+//     }
 
-    await Promise.all(
-      files.map(async (file, index) => {
-        try {
-          const formData = new FormData();
-          formData.append('file', file);
+//     await Promise.all(
+//       files.map(async (file, index) => {
+//         try {
+//           const formData = new FormData();
+//           formData.append('file', file);
 
-          const fileType = file.name.split('.').pop();
+//           const fileType = file.name.split('.').pop();
 
-          const isFileSupport = allowedFileTypes.find(
-            (configuredType) => configuredType === fileType
-          );
+//           const isFileSupport = allowedFileTypes.find(
+//             (configuredType) => configuredType === fileType
+//           );
 
-          if (!isFileSupport) {
-            failedUploads.push(file.name);
-            return;
-          }
+//           if (!isFileSupport) {
+//             failedUploads.push(file.name);
+//             return;
+//           }
 
-          const uploadResponse = await fetch(
-            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
-            {
-              method: 'POST',
-              body: formData,
-              headers: {
-                Authorization: `Token ${accessToken}`,
-              },
-            }
-          );
+//           const uploadResponse = await fetch(
+//             `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
+//             {
+//               method: 'POST',
+//               body: formData,
+//               headers: {
+//                 Authorization: `Token ${accessToken}`,
+//               },
+//             }
+//           );
 
-          if (uploadResponse.status === 200) {
-            const uploadResponseData = await uploadResponse.json();
-            successfulUploads.push(uploadResponseData);
-          } else {
-            const errorData = await uploadResponse.json(); // Get the error response body
+//           if (uploadResponse.status === 200) {
+//             const uploadResponseData = await uploadResponse.json();
+//             successfulUploads.push(uploadResponseData);
+//           } else {
+//             const errorData = await uploadResponse.json(); // Get the error response body
 
-            failedUploads.push({
-              fileName: file.name,
-              message: errorData.message || 'Failed to upload file.',
-            });
-          }
-        } catch (error) {
-          failedUploads.push({
-            fileName: file.name,
-            message: errorData.message || 'Failed to upload file.',
-          });
-        }
-      })
-    );
+//             failedUploads.push({
+//               fileName: file.name,
+//               message: errorData.message || 'Failed to upload file.',
+//             });
+//           }
+//         } catch (error) {
+//           failedUploads.push({
+//             fileName: file.name,
+//             message: errorData.message || 'Failed to upload file.',
+//           });
+//         }
+//       })
+//     );
 
-    const errorObject = null;
-    if (failedUploads.length > 0) {
-      errorObject = {
-        message: 'Failed to upload some files.',
-        count: failedUploads.length,
-        failedUploads,
-      };
-    }
-    return {
-      data: {
-        count: successfulUploads.length,
-        successfulUploads,
-      },
-      error: errorObject,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      data: {
-        count: 0,
-        successfulUploads: [],
-      },
-      error: {
-        message: error.message || 'Failed to upload files.',
-        count: files.length,
-        failedUploads: files.map((file) => file.name),
-      },
-      status: 400,
-    };
-  }
-};
+//     const errorObject = null;
+//     if (failedUploads.length > 0) {
+//       errorObject = {
+//         message: 'Failed to upload some files.',
+//         count: failedUploads.length,
+//         failedUploads,
+//       };
+//     }
+//     return {
+//       data: {
+//         count: successfulUploads.length,
+//         successfulUploads,
+//       },
+//       error: errorObject,
+//       status: 200,
+//     };
+//   } catch (error) {
+//     return {
+//       data: {
+//         count: 0,
+//         successfulUploads: [],
+//       },
+//       error: {
+//         message: error.message || 'Failed to upload files.',
+//         count: files.length,
+//         failedUploads: files.map((file) => file.name),
+//       },
+//       status: 400,
+//     };
+//   }
+// };
 
 const updateTags = async ({
   accessToken,
   fileId,
   tags,
   environment = 'PRODUCTION',
-}) => {
+}: UpdateTagsParams): Promise<UpdateTagsResponse> => {
   const appendTagsResponse = await fetch(
     `${BASE_URL[environment]}/create_user_file_tags`,
     {
@@ -402,7 +439,7 @@ const processSitemapUrl = async ({
   accessToken,
   sitemapUrl,
   environment = 'PRODUCTION',
-}) => {
+}: ProcessSitemapUrlParams): Promise<ProcessSitemapUrlResponse> => {
   try {
     if (!sitemapUrl) {
       return {
@@ -449,17 +486,22 @@ const processSitemapUrl = async ({
   }
 };
 
-const submitScrapeRequest = async ({
-  accessToken,
-  urls,
-  recursionDepth = 1,
-  maxPagesToScrape = 1,
-  chunkSize = 1500,
-  chunkOverlap = 20,
-  skipEmbeddingGeneration = false,
-  environment = 'PRODUCTION',
-}) => {
+const submitScrapeRequest = async (
+  params: SubmitScrapeRequestParams
+): Promise<SubmitScrapeRequestResponse> => {
   try {
+    const {
+      accessToken,
+      urls,
+      tags = {},
+      recursionDepth = 1,
+      maxPagesToScrape = 1,
+      chunkSize = 1500,
+      chunkOverlap = 20,
+      skipEmbeddingGeneration = false,
+      environment = 'PRODUCTION',
+    } = params;
+
     const urlPattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -490,17 +532,14 @@ const submitScrapeRequest = async ({
       skip_embedding_generation: skipEmbeddingGeneration,
     }));
 
-    const uploadResponse = await carbonFetch(
-      `${BASE_URL[environment]}/web_scrape`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestObject),
-      }
-    );
+    const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Token ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestObject),
+    });
 
     if (uploadResponse.status === 200) {
       const responseData = await uploadResponse.json();
@@ -510,6 +549,12 @@ const submitScrapeRequest = async ({
           files: responseData.files,
         },
         error: null,
+      };
+    } else {
+      return {
+        status: uploadResponse.status,
+        data: null,
+        error: 'Error initiating scraping. Please try again.',
       };
     }
   } catch (error) {

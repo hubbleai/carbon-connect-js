@@ -6,21 +6,20 @@ import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: 'index.js',
+  input: 'index.ts',
   output: [
     { file: pkg.main, format: 'cjs' },
     { file: pkg.module, format: 'esm' },
   ],
   plugins: [
-    // typescript(),
-    babel({
-      babelHelpers: 'bundled',
-      exclude: 'node_modules/**',
-      presets: ['@babel/preset-env'],
-    }),
     resolve({ extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
     commonjs(),
+    typescript(),
+    babel({
+      babelHelpers: 'bundled',
+      exclude: ['node_modules/**', '**/*.ts', '**/*.tsx'],
+      presets: ['@babel/preset-env'],
+    }),
     terser(),
   ],
-  //   external: Object.keys(pkg.peerDependencies),
 };
