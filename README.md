@@ -1,10 +1,10 @@
 # Carbon Connect
 
-Carbon Connect JS is a vanilla JS wrapper and a headless offering to integration carbon.ai API into your product.
+Carbon Connect JS is a vanilla JS wrapper and a headless offering to integrate carbon.ai API into your product.
 
 ## Installation
 
-Use the package manager [npm](https://www.npmjs.com/) to install carbon-connect.
+Use the package manager [npm](https://www.npmjs.com/) to install `carbon-connect-js`.
 
 ```bash
 npm install carbon-connect-js
