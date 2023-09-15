@@ -1,6 +1,6 @@
 # Carbon Connect
 
-Carbon Connect JS is a vanilla JS wrapper and a headless offering to integrate carbon.ai API into your product.
+Carbon Connect JS is a vanilla JS wrapper and a headless offering to integrate Carbon API into your product.
 
 ## Installation
 
@@ -243,7 +243,7 @@ fetchUserIntegrations();
   uploadFilesToPlatform();
   ```
 
-### 6. upateTags()
+### 6. updateTags()
 
 - **Description**: Updates or appends tags to a specified file in Carbon.
 
