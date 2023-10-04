@@ -60,6 +60,7 @@ const generateAccessToken = async ({
       };
     }
   } catch (err) {
+    console.log('Error: ', err);
     return {
       status: 400,
       data: null,
@@ -546,7 +547,7 @@ const submitScrapeRequest = async (
       return {
         status: 200,
         data: {
-          files: responseData.files,
+          files: responseData,
         },
         error: null,
       };
