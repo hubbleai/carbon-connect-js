@@ -1,5 +1,13 @@
 export type Environment = 'PRODUCTION' | 'DEVELOPMENT' | 'LOCAL';
 
+export interface getCarbonHealthParams {
+  environment?: Environment;
+}
+
+export interface getCarbonHealthResponse {
+  status: number;
+}
+
 export interface AccessTokenParams {
   apiKey: string;
   customerId: string;
@@ -19,7 +27,8 @@ export interface WhiteLabelDataParams {
 
 export interface WhiteLabelDataResponse {
   status: number;
-  data: any;
+  data: any | null;
+  error: string | null;
 }
 
 export interface UserConnectionsParams {
@@ -81,6 +90,117 @@ export interface UploadFilesResponse {
   status: number;
 }
 
+export interface UploadFileFromUrlParams {
+  accessToken: string;
+  url: string;
+  fileName?: string;
+  chunkSize?: number;
+  chunkOverlap?: number;
+  skipEmbeddingGeneration?: boolean;
+  environment?: Environment;
+}
+
+export interface UploadFileFromUrlResponse {
+  status: number;
+  data: {
+    file: any;
+  } | null;
+  error: string | null;
+}
+
+export interface UploadTextParams {
+  accessToken: string;
+  contents: string;
+  fileName?: string;
+  chunkSize?: number;
+  chunkOverlap?: number;
+  skipEmbeddingGeneration?: boolean;
+  overWriteFileId?: number | null;
+  environment?: Environment;
+}
+
+export interface UploadTextResponse {
+  status: number;
+  data: {
+    file: any;
+  } | null;
+  error: string | null;
+}
+
+export interface DeleteFileParams {
+  accessToken: string;
+  fileId: string;
+  environment?: Environment;
+}
+
+export interface DeleteFileResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface ResyncFileParams {
+  accessToken: string;
+  fileId: string;
+  chunkSize?: number;
+  chunkOverlap?: number;
+  environment?: Environment;
+}
+
+export interface ResyncFileResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface GetRawFilePresignedUrlParams {
+  accessToken: string;
+  fileId: string;
+  environment?: Environment;
+}
+
+export interface GetRawFilePresignedUrlResponse {
+  status: number;
+  data: {
+    presigned_url: string;
+  } | null;
+  error: string | null;
+}
+
+export interface GetParsedFilePresignedUrlParams {
+  accessToken: string;
+  fileId: string;
+  environment?: Environment;
+}
+
+export interface GetParsedFilePresignedUrlResponse {
+  status: number;
+  data: {
+    presigned_url: string;
+  } | null;
+  error: string | null;
+}
+
+export interface GetUserFilesParams {
+  accessToken: string;
+  limit?: number;
+  offset?: number;
+  order_by?: string;
+  order_dir?: string;
+  filters?: Record<string, any>;
+  include_raw_file?: boolean;
+  include_parsed_file?: boolean;
+  environment?: Environment;
+}
+
+export interface GetUserFilesResponse {
+  status: number;
+  data: {
+    files: any[];
+  } | null;
+  error: string | null;
+}
+
 export interface UpdateTagsParams {
   accessToken: string;
   fileId: string;
@@ -90,6 +210,62 @@ export interface UpdateTagsParams {
 }
 
 export interface UpdateTagsResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface DeleteTagsParams {
+  accessToken: string;
+  organizationUserFileId: number;
+  tags: string[];
+  environment?: Environment;
+}
+
+export interface DeleteTagsResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface GetUrlsFromWebPageParams {
+  accessToken: string;
+  url: string;
+  environment?: Environment;
+}
+
+export interface GetUrlsFromWebPageResponse {
+  status: number;
+  data: {
+    urls: string[];
+    html_content: string | null;
+  } | null;
+  error: string | null;
+}
+
+export interface SearchUrlsForQueryParams {
+  accessToken: string;
+  query: string;
+  environment?: Environment;
+}
+
+export interface SearchUrlsForQueryResponse {
+  status: number;
+  data: {
+    urls: string[];
+    html_content: string | null;
+  } | null;
+  error: string | null;
+}
+
+export interface FetchYoutubeTranscriptsParams {
+  accessToken: string;
+  videoId: string;
+  raw?: boolean;
+  environment?: Environment;
+}
+
+export interface FetchYoutubeTranscriptsResponse {
   status: number;
   data: any | null;
   error: string | null;
@@ -128,5 +304,48 @@ export interface SubmitScrapeRequestResponse {
   data: {
     files: string[];
   } | null;
+  error: string | null;
+}
+
+export interface HybridSearchParams {
+  weightA: number;
+  weightB: number;
+}
+export interface GetEmbeddingsParams {
+  accessToken: string;
+  query: string;
+  queryVector?: number[] | null;
+  k: number;
+  filesIds?: number[] | null;
+  parentFileIds?: number[] | null;
+  tags?: Record<string, any> | null;
+  includeTags?: boolean | null;
+  includeVectors?: boolean | null;
+  includeRawFile?: boolean | null;
+  hybridSearch?: boolean | null;
+  hybridSearchTuningParameters?: HybridSearchParams | null;
+  environment?: Environment;
+}
+
+export interface GetEmbeddingsResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface GetTextChunksParams {
+  accessToken: string;
+  limit?: number;
+  offset?: number;
+  orderBy?: string;
+  orderDir?: string;
+  userFileId: number;
+  includeVectors?: boolean;
+  environment?: Environment;
+}
+
+export interface GetTextChunksResponse {
+  status: number;
+  data: any | null;
   error: string | null;
 }

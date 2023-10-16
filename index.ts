@@ -1,5 +1,7 @@
 // import { allowedFileTypes, BASE_URL } from './constants';
 import {
+  getCarbonHealthParams,
+  getCarbonHealthResponse,
   AccessTokenParams,
   AccessTokenResponse,
   WhiteLabelDataParams,
@@ -10,12 +12,38 @@ import {
   GenerateOAuthURLResponse,
   UploadFilesParams,
   UploadFilesResponse,
+  UploadFileFromUrlParams,
+  UploadFileFromUrlResponse,
   UpdateTagsParams,
   UpdateTagsResponse,
   ProcessSitemapUrlParams,
   ProcessSitemapUrlResponse,
   SubmitScrapeRequestParams,
   SubmitScrapeRequestResponse,
+  UploadTextParams,
+  UploadTextResponse,
+  DeleteFileParams,
+  DeleteFileResponse,
+  GetRawFilePresignedUrlParams,
+  GetRawFilePresignedUrlResponse,
+  GetParsedFilePresignedUrlParams,
+  GetParsedFilePresignedUrlResponse,
+  GetUserFilesParams,
+  GetUserFilesResponse,
+  DeleteTagsParams,
+  DeleteTagsResponse,
+  ResyncFileParams,
+  ResyncFileResponse,
+  GetUrlsFromWebPageParams,
+  GetUrlsFromWebPageResponse,
+  SearchUrlsForQueryParams,
+  SearchUrlsForQueryResponse,
+  FetchYoutubeTranscriptsParams,
+  FetchYoutubeTranscriptsResponse,
+  GetEmbeddingsParams,
+  GetEmbeddingsResponse,
+  GetTextChunksParams,
+  GetTextChunksResponse,
 } from './types';
 
 export const allowedFileTypes = ['pdf', 'docx', 'txt', 'csv', 'md', 'pptx'];
@@ -24,6 +52,36 @@ export const BASE_URL: Record<string, string> = {
   PRODUCTION: 'https://api.carbon.ai',
   DEVELOPMENT: 'https://api.dev.carbon.ai',
   LOCAL: 'http://localhost:8000',
+};
+
+const getCarbonHealth = async ({
+  environment = 'PRODUCTION',
+}: getCarbonHealthParams): Promise<getCarbonHealthResponse> => {
+  try {
+    const carbonHealthResponse = await fetch(
+      `${BASE_URL[environment]}/health`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (carbonHealthResponse.status === 200) {
+      return {
+        status: 200,
+      };
+    } else {
+      return {
+        status: carbonHealthResponse.status,
+      };
+    }
+  } catch {
+    return {
+      status: 500,
+    };
+  }
 };
 
 const generateAccessToken = async ({
@@ -60,7 +118,6 @@ const generateAccessToken = async ({
       };
     }
   } catch (err) {
-    console.log('Error: ', err);
     return {
       status: 400,
       data: null,
@@ -73,22 +130,39 @@ const getWhiteLabelData = async ({
   accessToken,
   environment = 'PRODUCTION',
 }: WhiteLabelDataParams): Promise<WhiteLabelDataResponse> => {
-  const whiteLabelingResponse = await fetch(
-    `${BASE_URL[environment]}/auth/v1/white_labeling`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Token ${accessToken}`,
-      },
-    }
-  );
-  const whiteLabelingResponseData = await whiteLabelingResponse.json();
+  try {
+    const whiteLabelingResponse = await fetch(
+      `${BASE_URL[environment]}/auth/v1/white_labeling`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Token ${accessToken}`,
+        },
+      }
+    );
+    const whiteLabelingResponseData = await whiteLabelingResponse.json();
 
-  return {
-    status: whiteLabelingResponse.status,
-    data: whiteLabelingResponseData,
-  };
+    if (whiteLabelingResponse.status === 200) {
+      return {
+        status: whiteLabelingResponse.status,
+        data: whiteLabelingResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: whiteLabelingResponse.status,
+        data: null,
+        error: whiteLabelingResponseData.error || 'Unexpected error occurred.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching white labeling data. Please try again.',
+    };
+  }
 };
 
 const getUserConnections = async ({
@@ -300,104 +374,334 @@ const uploadFiles = async ({
   }
 };
 
-// const uploadText = async ({
-//   accessToken,
-//   textContent,
-//   chunkSize = 1500,
-//   chunkOverlap = 20,
-//   skipEmbeddingGeneration = false,
-//   environment = 'PRODUCTION',
-// }) => {
-//   try {
-//     if (textContent.length === 0) {
-//       return {
-//         data: null,
-//         error: {
-//           message: 'No text has been provided to upload.',
-//         },
-//         status: 400,
-//       };
-//     }
+const uploadFileFromUrl = async ({
+  accessToken,
+  url,
+  fileName = '',
+  chunkSize = 1500,
+  chunkOverlap = 20,
+  skipEmbeddingGeneration = false,
+  environment = 'PRODUCTION',
+}: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
+  try {
+    const uploadResponse = await fetch(
+      `${BASE_URL[environment]}/upload_file_from_url`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          url: url,
+          file_name: fileName,
+          chunk_size: chunkSize,
+          chunk_overlap: chunkOverlap,
+          skip_embedding_generation: skipEmbeddingGeneration,
+        }),
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-//     await Promise.all(
-//       files.map(async (file, index) => {
-//         try {
-//           const formData = new FormData();
-//           formData.append('file', file);
+    if (uploadResponse.status === 200) {
+      const uploadResponseData = await uploadResponse.json();
+      return {
+        status: 200,
+        data: {
+          file: uploadResponseData,
+        },
+        error: null,
+      };
+    } else {
+      return {
+        status: uploadResponse.status,
+        data: null,
+        error: 'Failed to upload file.',
+      };
+    }
+  } catch (error) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to upload file.',
+    };
+  }
+};
 
-//           const fileType = file.name.split('.').pop();
+const uploadText = async ({
+  accessToken,
+  contents,
+  fileName = '',
+  chunkSize = 1500,
+  chunkOverlap = 20,
+  skipEmbeddingGeneration = false,
+  overWriteFileId = null,
+  environment = 'PRODUCTION',
+}: UploadTextParams): Promise<UploadTextResponse> => {
+  try {
+    const uploadResponse = await fetch(`${BASE_URL[environment]}/upload_text`, {
+      method: 'POST',
+      body: JSON.stringify({
+        contents: contents,
+        file_name: fileName,
+        chunk_size: chunkSize,
+        chunk_overlap: chunkOverlap,
+        skip_embedding_generation: skipEmbeddingGeneration,
+        overwrite_file_id: overWriteFileId,
+      }),
+      headers: {
+        Authorization: `Token ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
 
-//           const isFileSupport = allowedFileTypes.find(
-//             (configuredType) => configuredType === fileType
-//           );
+    if (uploadResponse.status === 200) {
+      const uploadResponseData = await uploadResponse.json();
+      return {
+        status: 200,
+        data: {
+          file: uploadResponseData,
+        },
+        error: null,
+      };
+    } else {
+      return {
+        status: uploadResponse.status,
+        data: null,
+        error: 'Failed to upload text.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to upload text.',
+    };
+  }
+};
 
-//           if (!isFileSupport) {
-//             failedUploads.push(file.name);
-//             return;
-//           }
+const deleteFile = async ({
+  accessToken,
+  fileId,
+  environment = 'PRODUCTION',
+}: DeleteFileParams): Promise<DeleteFileResponse> => {
+  try {
+    const deleteFileResponse = await fetch(
+      `${BASE_URL[environment]}/deletefile/${fileId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-//           const uploadResponse = await fetch(
-//             `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
-//             {
-//               method: 'POST',
-//               body: formData,
-//               headers: {
-//                 Authorization: `Token ${accessToken}`,
-//               },
-//             }
-//           );
+    if (deleteFileResponse.status === 200) {
+      const deleteFileResponseData = await deleteFileResponse.json();
+      return {
+        status: 200,
+        data: deleteFileResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: deleteFileResponse.status,
+        data: null,
+        error: 'Failed to delete file.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to delete file.',
+    };
+  }
+};
 
-//           if (uploadResponse.status === 200) {
-//             const uploadResponseData = await uploadResponse.json();
-//             successfulUploads.push(uploadResponseData);
-//           } else {
-//             const errorData = await uploadResponse.json(); // Get the error response body
+const resyncFile = async ({
+  accessToken,
+  fileId,
+  chunkSize = 1500,
+  chunkOverlap = 20,
+  environment = 'PRODUCTION',
+}: ResyncFileParams): Promise<ResyncFileResponse> => {
+  try {
+    const resyncFileResponse = await fetch(
+      `${BASE_URL[environment]}/resync_file`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file_id: fileId,
+          chunk_size: chunkSize,
+          chunk_overlap: chunkOverlap,
+        }),
+      }
+    );
 
-//             failedUploads.push({
-//               fileName: file.name,
-//               message: errorData.message || 'Failed to upload file.',
-//             });
-//           }
-//         } catch (error) {
-//           failedUploads.push({
-//             fileName: file.name,
-//             message: errorData.message || 'Failed to upload file.',
-//           });
-//         }
-//       })
-//     );
+    if (resyncFileResponse.status === 200) {
+      const resyncFileResponseData = await resyncFileResponse.json();
+      return {
+        status: 200,
+        data: resyncFileResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: resyncFileResponse.status,
+        data: null,
+        error: 'Failed to resync file.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to resync file.',
+    };
+  }
+};
 
-//     const errorObject = null;
-//     if (failedUploads.length > 0) {
-//       errorObject = {
-//         message: 'Failed to upload some files.',
-//         count: failedUploads.length,
-//         failedUploads,
-//       };
-//     }
-//     return {
-//       data: {
-//         count: successfulUploads.length,
-//         successfulUploads,
-//       },
-//       error: errorObject,
-//       status: 200,
-//     };
-//   } catch (error) {
-//     return {
-//       data: {
-//         count: 0,
-//         successfulUploads: [],
-//       },
-//       error: {
-//         message: error.message || 'Failed to upload files.',
-//         count: files.length,
-//         failedUploads: files.map((file) => file.name),
-//       },
-//       status: 400,
-//     };
-//   }
-// };
+const getRawFilePresignedUrl = async ({
+  accessToken,
+  fileId,
+  environment = 'PRODUCTION',
+}: GetRawFilePresignedUrlParams): Promise<GetRawFilePresignedUrlResponse> => {
+  try {
+    const getRawFilePresignedUrlResponse = await fetch(
+      `${BASE_URL[environment]}/raw_file/${fileId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (getRawFilePresignedUrlResponse.status === 200) {
+      const getRawFilePresignedUrlResponseData =
+        await getRawFilePresignedUrlResponse.json();
+      return {
+        status: 200,
+        data: getRawFilePresignedUrlResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: getRawFilePresignedUrlResponse.status,
+        data: null,
+        error: 'Failed to get raw file presigned url.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to get raw file presigned url.',
+    };
+  }
+};
+
+const getParsedFilePresignedUrl = async ({
+  accessToken,
+  fileId,
+  environment = 'PRODUCTION',
+}: GetParsedFilePresignedUrlParams): Promise<GetParsedFilePresignedUrlResponse> => {
+  try {
+    const getParsedFilePresignedUrlResponse = await fetch(
+      `${BASE_URL[environment]}/parsed_file/${fileId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (getParsedFilePresignedUrlResponse.status === 200) {
+      const getParsedFilePresignedUrlResponseData =
+        await getParsedFilePresignedUrlResponse.json();
+      return {
+        status: 200,
+        data: getParsedFilePresignedUrlResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: getParsedFilePresignedUrlResponse.status,
+        data: null,
+        error: 'Failed to get parsed file presigned url.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to get parsed file presigned url.',
+    };
+  }
+};
+
+const getUserFiles = async ({
+  accessToken,
+  limit = 10,
+  offset = 0,
+  order_by = 'updated_at',
+  order_dir = 'asc',
+  filters = {},
+  include_raw_file = false,
+  include_parsed_file = false,
+  environment = 'PRODUCTION',
+}: GetUserFilesParams): Promise<GetUserFilesResponse> => {
+  try {
+    const requestBody = {
+      pagination: { limit: limit, offset: offset },
+      order_by,
+      order_dir,
+      filters,
+      include_raw_file,
+      include_parsed_file,
+    };
+    const getUserFilesResponse = await fetch(
+      `${BASE_URL[environment]}/user_files_v2`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (getUserFilesResponse.status === 200) {
+      const getUserFilesResponseData = await getUserFilesResponse.json();
+      return {
+        status: 200,
+        data: getUserFilesResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: getUserFilesResponse.status,
+        data: null,
+        error: 'Failed to get user files.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to get user files.',
+    };
+  }
+};
 
 const updateTags = async ({
   accessToken,
@@ -432,6 +736,51 @@ const updateTags = async ({
       status: 400,
       data: null,
       error: 'Failed to add tags to the file.',
+    };
+  }
+};
+
+const deleteTags = async ({
+  accessToken,
+  organizationUserFileId,
+  tags = [],
+  environment = 'PRODUCTION',
+}: DeleteTagsParams): Promise<DeleteTagsResponse> => {
+  try {
+    const deleteTagsResponse = await fetch(
+      `${BASE_URL[environment]}/delete_user_file_tags`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          tags: tags,
+          organization_user_file_id: organizationUserFileId,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${accessToken}`,
+        },
+      }
+    );
+
+    if (deleteTagsResponse.status === 200) {
+      const deleteTagsResponseData = await deleteTagsResponse.json();
+      return {
+        status: 200,
+        data: deleteTagsResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: 400,
+        data: null,
+        error: 'Failed to delete tags from the file.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to delete tags from the file.',
     };
   }
 };
@@ -483,6 +832,133 @@ const processSitemapUrl = async ({
       status: 400,
       data: null,
       error: 'Error fetching sitemap. Please try again.',
+    };
+  }
+};
+
+const fetchUrls = async ({
+  accessToken,
+  url,
+  environment = 'PRODUCTION',
+}: GetUrlsFromWebPageParams): Promise<GetUrlsFromWebPageResponse> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL[environment]}/fetch_urls?url=${url}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const responseData = await response.json();
+      return {
+        status: 200,
+        data: {
+          urls: responseData.urls || [],
+          html_content: responseData.html_content || null,
+        },
+        error: null,
+      };
+    } else {
+      return {
+        status: 400,
+        data: null,
+        error: 'Error fetching urls. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching urls. Please try again.',
+    };
+  }
+};
+
+const searchUrls = async ({
+  accessToken,
+  query,
+  environment = 'PRODUCTION',
+}: SearchUrlsForQueryParams): Promise<SearchUrlsForQueryResponse> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL[environment]}/search_urls?query=${query}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const responseData = await response.json();
+      return {
+        status: 200,
+        data: {
+          urls: responseData.urls || [],
+          html_content: responseData.html_content || null,
+        },
+        error: null,
+      };
+    } else {
+      return {
+        status: 400,
+        data: null,
+        error: 'Error searching urls. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error searching urls. Please try again.',
+    };
+  }
+};
+
+const fetchYoutubeTranscript = async ({
+  accessToken,
+  videoId,
+  raw = false,
+  environment = 'PRODUCTION',
+}: FetchYoutubeTranscriptsParams): Promise<FetchYoutubeTranscriptsResponse> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL[environment]}/fetch_youtube_transcript?video_id=${videoId}&raw=${raw}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const responseData = await response.json();
+      return {
+        status: 200,
+        data: responseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: 400,
+        data: null,
+        error: 'Error fetching transcript. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching transcript. Please try again.',
     };
   }
 };
@@ -567,13 +1043,148 @@ const submitScrapeRequest = async (
   }
 };
 
+const getEmbeddings = async ({
+  accessToken,
+  query,
+  queryVector = null,
+  k = 1,
+  filesIds = null,
+  parentFileIds = null,
+  tags = null,
+  includeTags = null,
+  includeRawFile = null,
+  includeVectors = null,
+  hybridSearch = null,
+  hybridSearchTuningParameters = null,
+  environment = 'PRODUCTION',
+}: GetEmbeddingsParams): Promise<GetEmbeddingsResponse> => {
+  try {
+    const requestObject = {
+      query,
+      query_vector: queryVector,
+      k,
+      files_ids: filesIds,
+      parent_file_ids: parentFileIds,
+      tags,
+      include_tags: includeTags,
+      include_raw_file: includeRawFile,
+      include_vectors: includeVectors,
+      hybrid_search: hybridSearch,
+      hybrid_search_tuning_parameters: hybridSearchTuningParameters,
+    };
+
+    const embeddingsResponse = await fetch(
+      `${BASE_URL[environment]}/embeddings`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestObject),
+      }
+    );
+
+    if (embeddingsResponse.status === 200) {
+      const embeddingsResponseData = await embeddingsResponse.json();
+      return {
+        status: 200,
+        data: embeddingsResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: embeddingsResponse.status,
+        data: null,
+        error: 'Error fetching embeddings. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching embeddings. Please try again.',
+    };
+  }
+};
+
+const getTextChunks = async ({
+  accessToken,
+  userFileId,
+  limit = 10,
+  offset = 0,
+  orderBy = 'updated_at',
+  orderDir = 'asc',
+  includeVectors = false,
+  environment = 'PRODUCTION',
+}: GetTextChunksParams): Promise<GetTextChunksResponse> => {
+  try {
+    const requestBody = {
+      pagination: { limit: limit, offset: offset },
+      order_by: orderBy,
+      order_dir: orderDir,
+      include_vectors: includeVectors,
+      filters: {
+        user_file_id: userFileId,
+      },
+    };
+
+    const techChunksResponse = await fetch(
+      `${BASE_URL[environment]}/text_chunks`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (techChunksResponse.status === 200) {
+      const techChunksResponseData = await techChunksResponse.json();
+      return {
+        status: 200,
+        data: techChunksResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: techChunksResponse.status,
+        data: null,
+        error: 'Error fetching text chunks. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching text chunks. Please try again.',
+    };
+  }
+};
+
 export {
+  getCarbonHealth,
   generateAccessToken,
   getWhiteLabelData,
   getUserConnections,
   generateOauthurl,
   uploadFiles,
+  uploadFileFromUrl,
+  uploadText,
+  getUserFiles,
+  deleteFile,
+  resyncFile,
+  getRawFilePresignedUrl,
+  getParsedFilePresignedUrl,
   updateTags,
+  deleteTags,
   processSitemapUrl,
+  fetchUrls,
+  searchUrls,
+  fetchYoutubeTranscript,
   submitScrapeRequest,
+  getEmbeddings,
+  getTextChunks,
 };
