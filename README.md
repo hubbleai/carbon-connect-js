@@ -85,7 +85,7 @@ console.log(whiteLabelResponse.data);
   - `status` (number): The HTTP status code of the response.
   - `data` (object): The response data containing details of the white label settings.
 
-- **Usage**: Here's how you can use the `getWhiteLabelData()`` method
+- **Usage**: Here's how you can use the `getWhiteLabelData()` method
 
   ```javascript
   import * as Carbon from 'carbon-connect-js';
