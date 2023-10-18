@@ -37,14 +37,14 @@ console.log(whiteLabelResponse.data);
 
 - **Parameters**: The `generateAccessToken()` method accepts an object with the following properties:
 
-  - apiKey (string): Your API key.
-  - customerId (string): The customer's unique ID.
+  - `apiKey` (string): Your API key.
+  - `customerId` (string): The customer's unique ID.
 
 - **Returns**: A promise that resolves to an `AccessTokenResponse` object:
 
-  - status (number): The HTTP status code of the response.
-  - data (object or null): The response data containing the access token, if the request was successful. Otherwise, null.
-  - error (string or null): Error message if there was an issue generating the token. Otherwise, null.
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): The response data containing the access token, if the request was successful. Otherwise, null.
+  - `error` (string or null): Error message if there was an issue generating the token. Otherwise, null.
 
 - **Usage**: Here's how you can use the `generateAccessToken()` method
 
@@ -78,12 +78,12 @@ console.log(whiteLabelResponse.data);
 - **Description**: This method retrieves the white label data of the organization, which can be useful for custom branding and theming.
 - **Parameters**: The `getWhiteLabelData()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from the authentication process.
+  - `accessToken` (string): The access token obtained from the authentication process.
 
 - **Returns**: A promise that resolves to an `WhiteLabelDataResponse` object:
 
-  - status (number): The HTTP status code of the response.
-  - data (object): The response data containing details of the white label settings.
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object): The response data containing details of the white label settings.
 
 - **Usage**: Here's how you can use the `getWhiteLabelData()`` method
 
@@ -118,13 +118,13 @@ console.log(whiteLabelResponse.data);
 - **Description**: Retrieve all the active integrations or connections associated with a user.
 - **Parameters**: The `getUserConnections()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from the authentication process.
+  - `accessToken` (string): The access token obtained from the authentication process.
 
 - **Returns**: A promise that resolves to a `UserConnectionsResponse` object:
 
-  - status (number): The HTTP status code of the response.
-  - connections (array): List of active integrations or connections associated with the user.
-  - error (object or null): Contains error details if any issues arise while fetching user connections.
+  - `status` (number): The HTTP status code of the response.
+  - `connections` (array): List of active integrations or connections associated with the user.
+  - `error` (object or null): Contains error details if any issues arise while fetching user connections.
 
 - **Usage**:
 
@@ -157,18 +157,18 @@ fetchUserIntegrations();
 
 - **Parameters**: The `generateOauthurl()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from authentication.
-  - integrationName (string): Name of the third-party service you want to integrate.
-  - chunkSize (number, optional): Defines the chunk size. Defaults to 1500.
-  - chunkOverlap (number, optional): Defines the chunk overlap. Defaults to 20.
-  - skipEmbeddingGeneration (boolean, optional): If set to true, embedding generation will be skipped. Defaults to false.
-  - tags (object, optional): Tags that can be passed for additional information. Defaults to an empty object.
+  - `accessToken` (string): The access token obtained from authentication.
+  - `integrationName` (string): Name of the third-party service you want to integrate.
+  - `chunkSize` (number, optional): Defines the chunk size. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Defines the chunk overlap. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): If set to true, embedding generation will be skipped. Defaults to false.
+  - `tags` (object, optional): Tags that can be passed for additional information. Defaults to an empty object.
 
 - **Returns**: A promise that resolves to a `GenerateOAuthURLResponse` object:
 
-  - status (number): HTTP status code of the response.
-  - data (object): Contains details like the generated OAuth URL, integration name, chunk size, chunk overlap, and other specified parameters.
-  - error (string or null): Contains error message if there's any issue generating the OAuth URL.
+  - `status` (number): HTTP status code of the response.
+  - `data` (object): Contains details like the generated OAuth URL, integration name, chunk size, chunk overlap, and other specified parameters.
+  - `error` (string or null): Contains error message if there's any issue generating the OAuth URL.
 
 - **Usage**:
 
@@ -202,17 +202,17 @@ fetchUserIntegrations();
 
 - **Parameters**: The `uploadFiles()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from authentication.
-  - files (Array<File>): An array of files you want to upload.
-  - chunkSize (number, optional): Defines the chunk size. Defaults to 1500.
-  - chunkOverlap (number, optional): Defines the chunk overlap. Defaults to 20.
-  - skipEmbeddingGeneration (boolean, optional): If set to true, embedding generation will be skipped. Defaults to false.
+  - `accessToken` (string): The access token obtained from authentication.
+  - `files` (Array<File>): An array of files you want to upload.
+  - `chunkSize` (number, optional): Defines the chunk size. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Defines the chunk overlap. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): If set to true, embedding generation will be skipped. Defaults to false.
 
 - **Returns**: A promise that resolves to an UploadFilesResponse object:
 
-  - status (number): HTTP status code of the response.
-  - data (object): Contains details of the uploaded files, including count and array of successful uploads.
-  - error (object or null): Contains error details if there's an issue during file upload.
+  - `status` (number): HTTP status code of the response.
+  - `data` (object): Contains details of the uploaded files, including count and array of successful uploads.
+  - `error` (object or null): Contains error details if there's an issue during file upload.
 
 - **Usage**:
 
@@ -249,15 +249,15 @@ fetchUserIntegrations();
 
 - **Parameters**:
 
-  - accessToken (string): The access token obtained from authentication.
-  - fileId (int): The ID of the file you want to update tags for.
-  - tags (object): The tags you want to add or update for the specified file.
+  - `accessToken` (string): The access token obtained from authentication.
+  - `fileId` (int): The ID of the file you want to update tags for.
+  - `tags` (object): The tags you want to add or update for the specified file.
 
 - **Returns**: A promise that resolves to an `UpdateTagsResponse` object:
 
-  - status (number): HTTP status code of the response.
-  - data (object): Contains details of the updated file, including the file ID and updated tags.
-  - error (object or null): Contains error details if there's an issue updating the tags.
+  - `status` (number): HTTP status code of the response.
+  - `data` (object): Contains details of the updated file, including the file ID and updated tags.
+  - `error` (object or null): Contains error details if there's an issue updating the tags.
 
 - **Usage**:
 
@@ -292,22 +292,22 @@ fetchUserIntegrations();
   updateFileTags();
   ```
 
-### 7. handleFetchSitemapUrls()
+### 7. processSitemapUrl()
 
 - **Description**: Fetches and processes the URLs present in a specified sitemap.
 
-- **Parameters**: The `handleFetchSitemapUrls()` method accepts an object with the following properties:
+- **Parameters**: The `processSitemapUrl()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from authentication.
-  - sitemapUrl (string): The URL of the sitemap to be fetched.
+  - `accessToken` (string): The access token obtained from authentication.
+  - `sitemapUrl` (string): The URL of the sitemap to be fetched.
 
 - **Returns**: A promise that resolves to a `ProcessSitemapUrlResponse` object:
 
-  - status (number): HTTP status code of the response.
-  - data (object): Contains details of the fetched URLs.
-    - urls (array): An array of URLs retrieved from the sitemap.
-    - count (number): Total number of URLs retrieved from the sitemap.
-  - error (string or null): Error message if there's an issue fetching the sitemap.
+  - `status` (number): HTTP status code of the response.
+  - `data` (object): Contains details of the fetched URLs.
+    - `urls` (array): An array of URLs retrieved from the sitemap.
+    - `count` (number): Total number of URLs retrieved from the sitemap.
+  - `error` (string or null): Error message if there's an issue fetching the sitemap.
 
 - **Usage**:
 
@@ -343,21 +343,21 @@ fetchUserIntegrations();
 
 - **Parameters**: The `submitScrapeRequest()` method accepts an object with the following properties:
 
-  - accessToken (string): The access token obtained from authentication.
-  - urls (array of strings): An array of URLs you want to scrape.
-  - tags (object, optional): Tags associated with the scraping request. Defaults to an empty object.
-  - recursionDepth (number, optional): Specifies the depth of scraping for linked pages. Defaults to 1.
-  - maxPagesToScrape (number, optional): Maximum number of pages to scrape per URL. Defaults to 1.
-  - chunkSize (number, optional): Size of data chunks. Defaults to 1500.
-  - chunkOverlap (number, optional): Overlapping size between chunks. Defaults to 20.
-  - skipEmbeddingGeneration (boolean, optional): Indicates whether to skip embedding generation during scraping. Defaults to false.
+  - `accessToken` (string): The access token obtained from authentication.
+  - `urls` (array of strings): An array of URLs you want to scrape.
+  - `tags` (object, optional): Tags associated with the scraping request. Defaults to an empty object.
+  - `recursionDepth` (number, optional): Specifies the depth of scraping for linked pages. Defaults to 1.
+  - `maxPagesToScrape` (number, optional): Maximum number of pages to scrape per URL. Defaults to 1.
+  - `chunkSize` (number, optional): Size of data chunks. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during scraping. Defaults to false.
 
 - **Returns**: A promise that resolves to a `SubmitScrapeRequestResponse` object:
 
-  - status (number): HTTP status code of the response.
-  - data (object): Contains details of the scraping response.
-    - files (array): An array of objects, each representing a file resulting from the scraping process.
-  - error (string or null): Error message if there's an issue initiating the scraping.
+  - `status` (number): HTTP status code of the response.
+  - `data` (object): Contains details of the scraping response.
+    - `files` (array): An array of objects, each representing a file resulting from the scraping process.
+  - `error` (string or null): Error message if there's an issue initiating the scraping.
 
 - **Usage**:
 
@@ -385,6 +385,741 @@ fetchUserIntegrations();
     }
   }
 
-  // For demonstration purposes, invoking the function.
   initiateScraping();
+  ```
+
+### 9. getCarbonHealth()
+
+- **Description**: Fetches the health status of the Carbon service.
+
+- **Parameters**: The `getCarbonHealth()` method does not accept any parameters.
+
+- **Returns**: A promise that resolves to a `getCarbonHealthResponse` object:
+
+  - status (number): HTTP status code indicating the health status. A status of 200 means the service is healthy.
+
+- **Usage**: Here's how you can use the `getCarbonHealth()` method
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function fetchCarbonHealth() {
+    try {
+      const response = await Carbon.getCarbonHealth();
+
+      if (response.status === 200) {
+        console.log('Carbon service is healthy.');
+      } else {
+        console.error(
+          'Carbon service is currently unavailable:',
+          response.status
+        );
+      }
+    } catch (err) {
+      console.error(
+        'Unexpected error while checking Carbon health:',
+        err.message
+      );
+    }
+  }
+
+  fetchCarbonHealth();
+  ```
+
+### 10. uploadFileFromUrl()
+
+- **Description**: Uploads a file to the Carbon service by fetching it from a specified URL.
+
+- **Parameters**: The `uploadFileFromUrl()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `url` (string): The URL from where the file needs to be fetched and uploaded.
+  - `fileName` (string, optional): A custom name for the file. If not specified, the original filename from the URL will be used.
+  - `chunkSize` (number, optional): Size of data chunks when uploading. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during the upload. Defaults to false.
+
+- **Returns**: A promise that resolves to an `UploadFileFromUrlResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): Contains details of the uploaded file.
+    - `file` (object): Represents the uploaded file with all its properties.
+  - `error` (string or null): Error message if there's an issue with the upload.
+
+- **Usage**: Here's how you can use the `uploadFileFromUrl()` method
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function uploadFromUrl() {
+    const fileUrl = 'URL_TO_THE_FILE'; // Replace with the actual URL
+
+    try {
+      const response = await Carbon.uploadFileFromUrl({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        url: fileUrl,
+        fileName: 'custom_file_name.ext',
+      });
+
+      if (response.status === 200) {
+        console.log('Uploaded file details:', response.data.file);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during upload:', err.message);
+    }
+  }
+
+  uploadFromUrl();
+  ```
+
+### 11. uploadText()
+
+- **Description**: Uploads textual content to the Carbon service.
+
+- **Parameters**: The `uploadText()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `contents` (string): The text content you want to upload.
+  - `fileName` (string, optional): A custom name for the file. If not specified, a default name will be used.
+  - `chunkSize` (number, optional): Size of data chunks when uploading. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during the upload. Defaults to false.
+  - `overWriteFileId` (number or null, optional): If provided, the uploaded content will overwrite an existing file with the given ID.
+
+- **Returns**: A promise that resolves to an `UploadTextResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): Contains details of the uploaded file.
+    - `file` (object): Represents the uploaded file with all its properties.
+  - `error` (string or null): Error message if there's an issue with the upload.
+
+- **Usage**: Here's how you can use the `uploadText()` method
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function uploadCustomText() {
+    const textContent = 'This is a sample text content for upload.';
+
+    try {
+      const response = await Carbon.uploadText({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        contents: textContent,
+        fileName: 'sample_text.txt',
+      });
+
+      if (response.status === 200) {
+        console.log('Uploaded file details:', response.data.file);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during upload:', err.message);
+    }
+  }
+
+  uploadCustomText();
+  ```
+
+### 12. deleteFile()
+
+- **Description**: Deletes a specified file from the Carbon service.
+
+- **Parameters**: The `deleteFile()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `fileId` (string): The ID of the file you want to delete.
+
+- **Returns**: A promise that resolves to an `DeleteFileResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): Contains details of the deleted file or any additional response data.
+  - `error` (string or null): Error message if there's an issue deleting the file.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function removeFile() {
+    const targetFileId = 'YOUR_FILE_ID_HERE';
+
+    try {
+      const response = await Carbon.deleteFile({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        fileId: targetFileId,
+      });
+
+      if (response.status === 200) {
+        console.log('File successfully deleted:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during file deletion:', err.message);
+    }
+  }
+
+  removeFile();
+  ```
+
+### 13. resyncFile()
+
+- **Description**: Initiates a resynchronization of a specified file with the Carbon service. This may be useful if a file's internal data structure has changed or if there are discrepancies with the data on the server.
+
+- **Parameters**: The `resyncFile()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `fileId` (string): The ID of the file you want to resynchronize.
+  - `chunkSize` (number, optional, default 1500): Specifies the size of the chunks when processing the file.
+  - `chunkOverlap` (number, optional, default 20): Specifies the overlap size between each chunk.
+
+- **Returns**: A promise that resolves to an `ResyncFileResponse` object:
+
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): The response data containing the access token, if the request was successful. Otherwise, null.
+  - `error` (string or null): Error message if there was an issue generating the token. Otherwise, null.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function resynchronizeFile() {
+    const targetFileId = 'YOUR_FILE_ID_HERE';
+
+    try {
+      const response = await Carbon.resyncFile({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        fileId: targetFileId,
+        chunkSize: 1600, // Optional. Default is 1500.
+        chunkOverlap: 25, // Optional. Default is 20.
+      });
+
+      if (response.status === 200) {
+        console.log('File successfully resynced:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during file resync:', err.message);
+    }
+  }
+
+  resynchronizeFile();
+  ```
+
+### 14. getRawFilePresignedUrl()
+
+- **Description**: Fetches a presigned URL which can be used to directly access the raw content of a file stored with the Carbon service.
+
+- **Parameters**: The `getRawFilePresignedUrl()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `fileId` (string): The ID of the file for which you want to get the presigned URL.
+
+- **Returns**: A promise that resolves to an `GetRawFilePresignedUrlResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null):
+    - `presigned_url` (string): The presigned URL which can be used to access the raw file content.
+  - `error` (string or null): Error message if there's an issue fetching the presigned URL.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function fetchPresignedUrl() {
+    const targetFileId = 'YOUR_FILE_ID_HERE';
+
+    try {
+      const response = await Carbon.getRawFilePresignedUrl({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        fileId: targetFileId,
+      });
+
+      if (response.status === 200) {
+        console.log('Presigned URL:', response.data.presigned_url);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching presigned URL:', err.message);
+    }
+  }
+
+  fetchPresignedUrl();
+  ```
+
+### 15. getParsedFilePresignedUrl()
+
+- **Description**: Fetches a presigned URL which can be used to directly access the parsed content of a file stored with the Carbon service.
+
+- **Parameters**: The `getParsedFilePresignedUrl()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `fileId` (string): The ID of the file for which you want to get the presigned URL.
+
+- **Returns**: A promise that resolves to an `GetParsedFilePresignedUrlResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null):
+    - `presigned_url` (string): The presigned URL which can be used to access the parsed file content.
+  - `error` (string or null): Error message if there's an issue fetching the presigned URL.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function fetchParsedPresignedUrl() {
+    const targetFileId = 'YOUR_FILE_ID_HERE';
+
+    try {
+      const response = await Carbon.getParsedFilePresignedUrl({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        fileId: targetFileId,
+      });
+
+      if (response.status === 200) {
+        console.log(
+          'Presigned URL for parsed content:',
+          response.data.presigned_url
+        );
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error(
+        'Unexpected error fetching presigned URL for parsed content:',
+        err.message
+      );
+    }
+  }
+
+  fetchParsedPresignedUrl();
+  ```
+
+### 16. getUserFiles()
+
+- **Description**: Fetches a list of user files from the Carbon service based on the specified filters.
+
+- **Parameters**: The `getUserFiles()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `limit` (number, optional, default = 10): The maximum number of files to return.
+  - `offset` (number, optional, default = 0): The starting point from which to fetch files.
+  - `order_by` (string, optional, default = 'updated_at'): The attribute by which to order the returned files.
+  - `order_dir` (string, optional, default = 'asc'): The direction to order files. Possible values are 'asc' or 'desc'.
+  - `filters` (Record<string, any>, optional, default = {}): An object of filters to apply to the file list query.
+  - `include_raw_file` (boolean, optional, default = false): If set to true, includes raw file's presigned url in the response.
+  - `include_parsed_file` (boolean, optional, default = false): If set to true, includes parsed file's presigned url in the response.
+
+- **Returns**: A promise that resolves to an `GetUserFilesResponse` object:
+
+  - status (number): HTTP status code of the response.
+  - data (object or null):
+    - files (any[]): An array of user file data objects.
+  - error (string or null): Error message if there's an issue fetching user files.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function fetchUserFiles() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      limit: 5,
+      order_by: 'created_at',
+      order_dir: 'desc',
+    };
+
+    try {
+      const response = await Carbon.getUserFiles(params);
+
+      if (response.status === 200) {
+        console.log('Fetched user files:', response.data.files);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching user files:', err.message);
+    }
+  }
+
+  fetchUserFiles();
+  ```
+
+### 17. deleteTags()
+
+- **Description**: Deletes specified tags from a user file in the given organization. The method makes a request to the Carbon service and attempts to remove the provided tags from the file with the specified `organizationUserFileId`.
+
+- **Parameters**: The `deleteTags()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `organizationUserFileId` (number): The unique identifier of the user file within the organization.
+  - `tags` (string[]): An array of tag names that are to be deleted from the user file.
+
+- **Returns**: A promise that resolves to an `DeleteTagsResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data object from the Carbon service after deleting the tags.
+  - `error` (string or null): Error message if there's an issue deleting the tags from the user file.
+
+- **Usage**: Here's how you can use the `generateAccessToken()` method
+
+  ```javascript
+  const Carbon = require('carbon-connect-js');
+
+  async function fetchAccessToken() {
+    try {
+      const response = await Carbon.generateAccessToken({
+        apiKey: 'your_api_key',
+        customerId: 'your_customer_id',
+      });
+
+      if (response.status === 200) {
+        console.log('Access token:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  }
+
+  fetchAccessToken();
+  ```
+
+### 18. fetchUrls()
+
+- **Description**: This method retrieves all URLs from a specified web page. It sends a GET request to the Carbon service with the target URL as a parameter. The Carbon service will then fetch the content of the specified web page and parse it to extract all URLs.
+
+- **Parameters**: The `fetchUrls()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `url` (string): The web page's URL from which the links need to be fetched.
+
+- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+
+  - status (number): HTTP status code of the response.
+  - data (object or null): The response data object containing the URLs and potentially the raw HTML content.
+    - urls (string[]): A list of URLs extracted from the web page.
+    - html_content (string or null): The raw HTML content of the fetched web page (if provided by the Carbon service).
+  - error (string or null): Error message if there's an issue fetching the URLs.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveUrls() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      url: 'https://www.example.com', // replace with actual URL
+    };
+
+    try {
+      const response = await Carbon.fetchUrls(params);
+
+      if (response.status === 200) {
+        console.log('Fetched URLs successfully:', response.data.urls);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching URLs:', err.message);
+    }
+  }
+
+  retrieveUrls();
+  ```
+
+### 19. searchUrls()
+
+- **Description**: This method performs a search for URLs based on the provided query string.
+
+- **Parameters**: The `searchUrls()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `query` (string): The search term or query for which URLs need to be found.
+
+- **Returns**: A promise that resolves to an `SearchUrlsForQueryResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data object containing the URLs.
+    - `urls` (string[]): A list of URLs related to the search query.
+    - `html_content` (null): A null value is returned.
+  - `error` (string or null): Error message if there's an issue searching for the URLs.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveSearchResults() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      query: 'example search term', // replace with actual query
+    };
+
+    try {
+      const response = await Carbon.searchUrls(params);
+
+      if (response.status === 200) {
+        console.log('Search results:', response.data.urls);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during search:', err.message);
+    }
+  }
+
+  retrieveSearchResults();
+  ```
+
+### 20. fetchYoutubeTranscript()
+
+- **Description**: This method retrieves the transcript for a specific YouTube video.
+
+- **Parameters**: The `fetchYoutubeTranscript()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `videoId` (string): The YouTube video's unique identifier.
+  - `raw` (boolean, optional): A flag indicating whether to fetch the raw transcript (default is false, indicating omly processed transcript is fetched).
+
+- **Returns**: A promise that resolves to an `FetchYoutubeTranscriptsResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data object containing the transcript information.
+  - `error` (string or null): Error message if there's an issue fetching the transcript.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveTranscript() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      videoId: 'YOUR_YOUTUBE_VIDEO_ID',
+      raw: true,
+    };
+
+    try {
+      const response = await Carbon.fetchYoutubeTranscript(params);
+
+      if (response.status === 200) {
+        console.log('Transcript data:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during transcript fetch:', err.message);
+    }
+  }
+
+  retrieveTranscript();
+  ```
+
+### 21. getEmbeddingsfetchUrls()
+
+- **Description**: This method is used to fetch embeddings based on a provided query.
+
+- **Parameters**: The `getEmbeddings()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `query` (string): The search query.
+  - `queryVector` (number[] or null, optional): The query vector.
+  - `k` (number): Number of nearest embeddings to retrieve.
+  - `filesIds` (number[] or null, optional): Array of file IDs.
+  - `parentFileIds` (number[] or null, optional): Array of parent file IDs.
+  - `tags` (Record<string, any> or null, optional): Tags associated with the embeddings.
+  - `includeTags` (boolean or null, optional): Flag to include tags.
+  - `includeVectors` (boolean or null, optional): Flag to include vectors.
+  - `includeRawFile` (boolean or null, optional): Flag to include raw file.
+  - `hybridSearch` (boolean or null, optional): Flag to indicate hybrid search.
+  - `hybridSearchTuningParameters` (HybridSearchParams or null, optional): Parameters to fine-tune the hybrid search.
+
+- **Returns**: A promise that resolves to an `GetEmbeddingsResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data containing the embeddings information.
+  - `error` (string or null): Error message if there's an issue fetching the embeddings.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveEmbeddings() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      query: 'YOUR_SEARCH_QUERY',
+      k: 5, // Example: retrieve 5 nearest embeddings.
+      // Add other parameters as needed
+    };
+
+    try {
+      const response = await Carbon.getEmbeddings(params);
+
+      if (response.status === 200) {
+        console.log('Embeddings data:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during embeddings fetch:', err.message);
+    }
+  }
+
+  retrieveEmbeddings();
+  ```
+
+### 22. getTextChunks()
+
+- **Description**: This method retrieves all URLs from a specified web page. It sends a GET request to the Carbon service with the target URL as a parameter. The Carbon service will then fetch the content of the specified web page and parse it to extract all URLs.
+
+- **Parameters**: The `getTextChunks()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `userFileId` (number): ID of the user file for which text chunks are being fetched.
+  - `limit` (number, optional): Maximum number of text chunks to retrieve. Defaults to 10.
+  - `offset` (number, optional): The number to start the fetch from. Useful for pagination. Defaults to 0.
+  - `orderBy` (string, optional): The column name to order the results by. Defaults to 'updated_at'.
+  - `orderDir` (string, optional): Direction of the order ('asc' or 'desc'). Defaults to 'asc'.
+  - `includeVectors` (boolean, optional): Flag to indicate whether to include vectors in the response. Defaults to false.
+
+- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data containing the text chunks information.
+  - `error` (string or null): Error message if there's an issue fetching the text chunks.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveTextChunks() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      userFileId: 12345, // Replace with actual user file ID.
+      limit: 5, // Example: retrieve 5 text chunks.
+      // Add other parameters as needed
+    };
+
+    try {
+      const response = await Carbon.getTextChunks(params);
+
+      if (response.status === 200) {
+        console.log('Text chunks data:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during text chunks fetch:', err.message);
+    }
+  }
+
+  retrieveTextChunks();
+  ```
+
+### 23. getUserDataSources()
+
+- **Description**: This method fetches user data sources based on the provided parameters.
+
+- **Parameters**: The `getUserDataSources()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `limit` (number, optional): Maximum number of data sources to retrieve. Defaults to 10.
+  - `offset` (number, optional): The number to start the fetch from. Useful for pagination. Defaults to 0.
+  - `orderBy` (string, optional): The column name to order the results by. Defaults to 'updated_at'.
+  - `orderDir` (string, optional): Direction of the order ('asc' or 'desc'). Defaults to 'asc'.
+  - `sourceType` (string, optional): Type of data source to filter the results by.
+  - `sourceIds` (number[] or null, optional): Array of specific data source IDs to retrieve.
+  - `revokedAccess` (boolean or null, optional): Flag to filter data sources based on revoked access.
+
+- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+
+  - status (number): HTTP status code of the response.
+  - data (object or null): The response data containing user data sources information.
+  - error (string or null): Error message if there's an issue fetching the user data sources.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function retrieveUserDataSources() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      limit: 5, // Example: retrieve 5 data sources.
+      // Add other parameters as needed
+    };
+
+    try {
+      const response = await Carbon.getUserDataSources(params);
+
+      if (response.status === 200) {
+        console.log('User data sources data:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error(
+        'Unexpected error during user data sources fetch:',
+        err.message
+      );
+    }
+  }
+
+  retrieveUserDataSources();
+  ```
+
+### 24. revokeAccessToDataSource()
+
+- **Description**: This method revokes access to a specified data source.
+
+- **Parameters**: The `revokeAccessToDataSource()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained from authentication.
+  - `dataSourceId` (number): The ID of the data source to which access should be revoked.
+
+- **Returns**: A promise that resolves to an `RevokeAccessToDataSourceResponse` object:
+
+  - `status` (number): HTTP status code of the response.
+  - `data` (object or null): The response data indicating the outcome of the revoke access request.
+  - `error` (string or null): Error message if there's an issue revoking access to the data source.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function revokeDataSourceAccess() {
+    const params = {
+      accessToken: 'YOUR_ACCESS_TOKEN',
+      dataSourceId: 12345, // Example: data source ID to revoke access to.
+    };
+
+    try {
+      const response = await Carbon.revokeAccessToDataSource(params);
+
+      if (response.status === 200) {
+        console.log('Successfully revoked access:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during access revocation:', err.message);
+    }
+  }
+
+  revokeDataSourceAccess();
   ```
