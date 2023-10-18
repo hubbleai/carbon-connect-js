@@ -349,3 +349,33 @@ export interface GetTextChunksResponse {
   data: any | null;
   error: string | null;
 }
+
+export interface GetUserDataSourcesParams {
+  accessToken: string;
+  limit?: number;
+  offset?: number;
+  orderBy?: string;
+  orderDir?: string;
+  sourceType?: string | null;
+  sourceIds?: number[] | null;
+  revokedAccess?: boolean | null;
+  environment?: Environment;
+}
+
+export interface GetUserDataSourcesResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}
+
+export interface RevokeAccessToDataSourceParams {
+  accessToken: string;
+  dataSourceId: number;
+  environment?: Environment;
+}
+
+export interface RevokeAccessToDataSourceResponse {
+  status: number;
+  data: any | null;
+  error: string | null;
+}

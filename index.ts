@@ -44,6 +44,10 @@ import {
   GetEmbeddingsResponse,
   GetTextChunksParams,
   GetTextChunksResponse,
+  GetUserDataSourcesParams,
+  GetUserDataSourcesResponse,
+  RevokeAccessToDataSourceParams,
+  RevokeAccessToDataSourceResponse,
 } from './types';
 
 export const allowedFileTypes = ['pdf', 'docx', 'txt', 'csv', 'md', 'pptx'];
@@ -1164,27 +1168,147 @@ const getTextChunks = async ({
   }
 };
 
+const getUserDataSources = async ({
+  accessToken,
+  limit = 10,
+  offset = 0,
+  orderBy = 'updated_at',
+  orderDir = 'asc',
+  sourceType = null,
+  sourceIds = null,
+  revokedAccess = null,
+  environment = 'PRODUCTION',
+}: GetUserDataSourcesParams): Promise<GetUserDataSourcesResponse> => {
+  try {
+    const requestBody = {
+      pagination: { limit: limit, offset: offset },
+      order_by: orderBy,
+      order_dir: orderDir,
+      filters: {
+        source: sourceType,
+        ids: sourceIds,
+        revoked_access: revokedAccess,
+      },
+    };
+
+    const userDataSourcesResponse = await fetch(
+      `${BASE_URL[environment]}/user_data_sources`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (userDataSourcesResponse.status === 200) {
+      const userDataSourcesResponseData = await userDataSourcesResponse.json();
+      return {
+        status: 200,
+        data: userDataSourcesResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: userDataSourcesResponse.status,
+        data: null,
+        error: 'Error fetching user data sources. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error fetching user data sources. Please try again.',
+    };
+  }
+};
+
+const revokeAccessToDataSource = async ({
+  accessToken,
+  dataSourceId,
+  environment = 'PRODUCTION',
+}: RevokeAccessToDataSourceParams): Promise<RevokeAccessToDataSourceResponse> => {
+  try {
+    const requestBody = {
+      data_source_id: dataSourceId,
+    };
+
+    const revokeAccessResponse = await fetch(
+      `${BASE_URL[environment]}/revoke_access_token`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (revokeAccessResponse.status === 200) {
+      const revokeAccessResponseData = await revokeAccessResponse.json();
+      return {
+        status: 200,
+        data: revokeAccessResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: revokeAccessResponse.status,
+        data: null,
+        error: 'Error revoking access to data source. Please try again.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error revoking access to data source. Please try again.',
+    };
+  }
+};
+
 export {
+  // Health
   getCarbonHealth,
+
+  // Auth
   generateAccessToken,
   getWhiteLabelData,
+
+  // Integrations
   getUserConnections,
   generateOauthurl,
+
+  // Data Sources
+  getUserDataSources,
+  revokeAccessToDataSource,
+
+  // Files
   uploadFiles,
   uploadFileFromUrl,
   uploadText,
-  getUserFiles,
   deleteFile,
-  resyncFile,
   getRawFilePresignedUrl,
   getParsedFilePresignedUrl,
+  getUserFiles,
+  resyncFile,
+
+  // Tags
   updateTags,
   deleteTags,
+
+  // Embeddings
+  getEmbeddings,
+  getTextChunks,
+
+  // Utilities
   processSitemapUrl,
   fetchUrls,
   searchUrls,
   fetchYoutubeTranscript,
   submitScrapeRequest,
-  getEmbeddings,
-  getTextChunks,
 };
