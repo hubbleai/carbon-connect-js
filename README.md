@@ -157,7 +157,7 @@ fetchUserIntegrations();
 
 - **Parameters**: The `generateOauthurl()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `integrationName` (string): Name of the third-party service you want to integrate.
   - `chunkSize` (number, optional): Defines the chunk size. Defaults to 1500.
   - `chunkOverlap` (number, optional): Defines the chunk overlap. Defaults to 20.
@@ -166,7 +166,7 @@ fetchUserIntegrations();
 
 - **Returns**: A promise that resolves to a `GenerateOAuthURLResponse` object:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object): Contains details like the generated OAuth URL, integration name, chunk size, chunk overlap, and other specified parameters.
   - `error` (string or null): Contains error message if there's any issue generating the OAuth URL.
 
@@ -202,7 +202,7 @@ fetchUserIntegrations();
 
 - **Parameters**: The `uploadFiles()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `files` (Array<File>): An array of files you want to upload.
   - `chunkSize` (number, optional): Defines the chunk size. Defaults to 1500.
   - `chunkOverlap` (number, optional): Defines the chunk overlap. Defaults to 20.
@@ -210,7 +210,7 @@ fetchUserIntegrations();
 
 - **Returns**: A promise that resolves to an UploadFilesResponse object:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object): Contains details of the uploaded files, including count and array of successful uploads.
   - `error` (object or null): Contains error details if there's an issue during file upload.
 
@@ -249,13 +249,13 @@ fetchUserIntegrations();
 
 - **Parameters**:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `fileId` (int): The ID of the file you want to update tags for.
   - `tags` (object): The tags you want to add or update for the specified file.
 
 - **Returns**: A promise that resolves to an `UpdateTagsResponse` object:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object): Contains details of the updated file, including the file ID and updated tags.
   - `error` (object or null): Contains error details if there's an issue updating the tags.
 
@@ -298,12 +298,12 @@ fetchUserIntegrations();
 
 - **Parameters**: The `processSitemapUrl()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `sitemapUrl` (string): The URL of the sitemap to be fetched.
 
 - **Returns**: A promise that resolves to a `ProcessSitemapUrlResponse` object:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object): Contains details of the fetched URLs.
     - `urls` (array): An array of URLs retrieved from the sitemap.
     - `count` (number): Total number of URLs retrieved from the sitemap.
@@ -343,7 +343,7 @@ fetchUserIntegrations();
 
 - **Parameters**: The `submitScrapeRequest()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `urls` (array of strings): An array of URLs you want to scrape.
   - `tags` (object, optional): Tags associated with the scraping request. Defaults to an empty object.
   - `recursionDepth` (number, optional): Specifies the depth of scraping for linked pages. Defaults to 1.
@@ -354,7 +354,7 @@ fetchUserIntegrations();
 
 - **Returns**: A promise that resolves to a `SubmitScrapeRequestResponse` object:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object): Contains details of the scraping response.
     - `files` (array): An array of objects, each representing a file resulting from the scraping process.
   - `error` (string or null): Error message if there's an issue initiating the scraping.
@@ -390,15 +390,15 @@ fetchUserIntegrations();
 
 ### 9. getCarbonHealth()
 
-- **Description**: Fetches the health status of the Carbon service.
+- **Description**: This function retrieves the health status of the Carbon service.
 
-- **Parameters**: The `getCarbonHealth()` method does not accept any parameters.
+- **Parameters**: The `getCarbonHealth()` method does not require any parameters.
 
 - **Returns**: A promise that resolves to a `getCarbonHealthResponse` object:
 
-  - status (number): HTTP status code indicating the health status. A status of 200 means the service is healthy.
+  - status (number): An HTTP status code indicating the health status. A status code of 200 indicates that the service is in a healthy state.
 
-- **Usage**: Here's how you can use the `getCarbonHealth()` method
+- **Usage**: Below is an example of how to utilize the `getCarbonHealth()` method
 
   ```javascript
   import * as Carbon from 'carbon-connect-js';
@@ -428,25 +428,25 @@ fetchUserIntegrations();
 
 ### 10. uploadFileFromUrl()
 
-- **Description**: Uploads a file to the Carbon service by fetching it from a specified URL.
+- **Description**: This function allows you to upload a file to the Carbon service by fetching it from a specified URL.
 
-- **Parameters**: The `uploadFileFromUrl()` method accepts an object with the following properties:
+- **Parameters**: The `uploadFileFromUrl()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `url` (string): The URL from where the file needs to be fetched and uploaded.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `url` (string): The URL from which the file should be retrieved and uploaded.
   - `fileName` (string, optional): A custom name for the file. If not specified, the original filename from the URL will be used.
-  - `chunkSize` (number, optional): Size of data chunks when uploading. Defaults to 1500.
-  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
-  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during the upload. Defaults to false.
+  - `chunkSize` (number, optional): The size of data chunks during the upload process. Default is set to 1500.
+  - `chunkOverlap` (number, optional): The overlap size between chunks. Default is set to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during the upload. Default is set to false.
 
-- **Returns**: A promise that resolves to an `UploadFileFromUrlResponse` object:
+- **Returns**: A promise that resolves to an `UploadFileFromUrlResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): Contains details of the uploaded file.
-    - `file` (object): Represents the uploaded file with all its properties.
-  - `error` (string or null): Error message if there's an issue with the upload.
+    - `file` (object): Represents the uploaded file and all its properties.
+  - `error` (string or null): An error message, if there's an issue with the upload.
 
-- **Usage**: Here's how you can use the `uploadFileFromUrl()` method
+- **Usage**: Below is an example of how to use the `uploadFileFromUrl()` method
 
   ```javascript
   import * as Carbon from 'carbon-connect-js';
@@ -476,26 +476,26 @@ fetchUserIntegrations();
 
 ### 11. uploadText()
 
-- **Description**: Uploads textual content to the Carbon service.
+- **Description**: This function enables the uploading of textual content to the Carbon service.
 
-- **Parameters**: The `uploadText()` method accepts an object with the following properties:
+- **Parameters**: The `uploadText()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `contents` (string): The text content you want to upload.
-  - `fileName` (string, optional): A custom name for the file. If not specified, a default name will be used.
-  - `chunkSize` (number, optional): Size of data chunks when uploading. Defaults to 1500.
-  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
-  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during the upload. Defaults to false.
-  - `overWriteFileId` (number or null, optional): If provided, the uploaded content will overwrite an existing file with the given ID.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `contents` (string): The text content you wish to upload.
+  - `fileName` (string, optional): A custom name for the file. If not specified, a random name will be used.
+  - `chunkSize` (number, optional): The size of data chunks during the upload process. The default value is 1500.
+  - `chunkOverlap` (number, optional): The overlapping size between chunks. The default value is 20.
+  - `skipEmbeddingGeneration` (boolean, optional): An indicator of whether to skip embedding generation during the upload. The default is set to false.
+  - `overWriteFileId` (number or null, optional): If provided, the uploaded content will overwrite an existing file with the specified ID.
 
-- **Returns**: A promise that resolves to an `UploadTextResponse` object:
+- **Returns**: A promise that resolves to an `UploadTextResponse` object containing the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): Contains details of the uploaded file.
-    - `file` (object): Represents the uploaded file with all its properties.
-  - `error` (string or null): Error message if there's an issue with the upload.
+    - `file` (object): Represents the uploaded file along with its properties.
+  - `error` (string or null): An error message in case of an issue during the upload.
 
-- **Usage**: Here's how you can use the `uploadText()` method
+- **Usage**: Below is an example of how to utilize the `uploadText()` method
 
   ```javascript
   import * as Carbon from 'carbon-connect-js';
@@ -525,18 +525,18 @@ fetchUserIntegrations();
 
 ### 12. deleteFile()
 
-- **Description**: Deletes a specified file from the Carbon service.
+- **Description**: This function allows for the removal of a specified file from the Carbon service.
 
-- **Parameters**: The `deleteFile()` method accepts an object with the following properties:
+- **Parameters**: The `deleteFile()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `fileId` (string): The ID of the file you want to delete.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `fileId` (string): The ID of the file you intend to delete.
 
-- **Returns**: A promise that resolves to an `DeleteFileResponse` object:
+- **Returns**: A promise that resolves to an `DeleteFileResponse` object containing the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): Contains details of the deleted file or any additional response data.
-  - `error` (string or null): Error message if there's an issue deleting the file.
+  - `error` (string or null): An error message in case there is an issue with the file deletion.
 
 - **Usage**:
 
@@ -567,20 +567,20 @@ fetchUserIntegrations();
 
 ### 13. resyncFile()
 
-- **Description**: Initiates a resynchronization of a specified file with the Carbon service. This may be useful if a file's internal data structure has changed or if there are discrepancies with the data on the server.
+- **Description**: This function triggers a resynchronization of a specified file with the Carbon service. This can be valuable in scenarios where a file's internal data changes or if there are discrepancies in the data on the server.
 
-- **Parameters**: The `resyncFile()` method accepts an object with the following properties:
+- **Parameters**: The `resyncFile()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `fileId` (string): The ID of the file you want to resynchronize.
-  - `chunkSize` (number, optional, default 1500): Specifies the size of the chunks when processing the file.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `fileId` (string): The ID of the file you wish to resynchronize.
+  - `chunkSize` (number, optional, default 1500): Specifies the chunk size when processing the file.
   - `chunkOverlap` (number, optional, default 20): Specifies the overlap size between each chunk.
 
-- **Returns**: A promise that resolves to an `ResyncFileResponse` object:
+- **Returns**: A promise that resolves to an `ResyncFileResponse` object with the following properties:
 
   - `status` (number): The HTTP status code of the response.
-  - `data` (object or null): The response data containing the access token, if the request was successful. Otherwise, null.
-  - `error` (string or null): Error message if there was an issue generating the token. Otherwise, null.
+  - `data` (object or null): The response data, containing the access token if the request was successful; otherwise, it is null.
+  - `error` (string or null): An error message if there was an issue generating the token, otherwise null.
 
 - **Usage**:
 
@@ -613,19 +613,19 @@ fetchUserIntegrations();
 
 ### 14. getRawFilePresignedUrl()
 
-- **Description**: Fetches a presigned URL which can be used to directly access the raw content of a file stored with the Carbon service.
+- **Description**: This function retrieves a presigned URL that can be utilized to directly access the unprocessed content of a file stored within the Carbon service.
 
-- **Parameters**: The `getRawFilePresignedUrl()` method accepts an object with the following properties:
+- **Parameters**: The `getRawFilePresignedUrl()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `fileId` (string): The ID of the file for which you want to get the presigned URL.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `fileId` (string): The ID of the file for which you seek to obtain the presigned URL.
 
-- **Returns**: A promise that resolves to an `GetRawFilePresignedUrlResponse` object:
+- **Returns**: A promise that resolves to an `GetRawFilePresignedUrlResponse` object comprising the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null):
-    - `presigned_url` (string): The presigned URL which can be used to access the raw file content.
-  - `error` (string or null): Error message if there's an issue fetching the presigned URL.
+    - `presigned_url` (string): The presigned URL that can be used to access the raw file content.
+  - `error` (string or null): An error message if there is an issue with fetching the presigned URL.
 
 - **Usage**:
 
@@ -656,19 +656,19 @@ fetchUserIntegrations();
 
 ### 15. getParsedFilePresignedUrl()
 
-- **Description**: Fetches a presigned URL which can be used to directly access the parsed content of a file stored with the Carbon service.
+- **Description**: This function retrieves a presigned URL that can be employed to directly access the parsed content of a file stored within the Carbon service.
 
-- **Parameters**: The `getParsedFilePresignedUrl()` method accepts an object with the following properties:
+- **Parameters**: The `getParsedFilePresignedUrl()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `fileId` (string): The ID of the file for which you want to get the presigned URL.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `fileId` (string): The ID of the file for which you desire the presigned URL.
 
-- **Returns**: A promise that resolves to an `GetParsedFilePresignedUrlResponse` object:
+- **Returns**: A promise that resolves to an `GetParsedFilePresignedUrlResponse` object containing the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null):
-    - `presigned_url` (string): The presigned URL which can be used to access the parsed file content.
-  - `error` (string or null): Error message if there's an issue fetching the presigned URL.
+    - `presigned_url` (string): The presigned URL that enables access to the parsed file content.
+  - `error` (string or null): An error message in the event of any issues with obtaining the presigned URL.
 
 - **Usage**:
 
@@ -705,25 +705,25 @@ fetchUserIntegrations();
 
 ### 16. getUserFiles()
 
-- **Description**: Fetches a list of user files from the Carbon service based on the specified filters.
+- **Description**: This function retrieves a list of user files from the Carbon service based on specified filters.
 
 - **Parameters**: The `getUserFiles()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `limit` (number, optional, default = 10): The maximum number of files to return.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `limit` (number, optional, default = 10): The maximum number of files to be returned.
   - `offset` (number, optional, default = 0): The starting point from which to fetch files.
-  - `order_by` (string, optional, default = 'updated_at'): The attribute by which to order the returned files.
-  - `order_dir` (string, optional, default = 'asc'): The direction to order files. Possible values are 'asc' or 'desc'.
+  - `order_by` (string, optional, default = 'updated_at'): The attribute by which the returned files are ordered.
+  - `order_dir` (string, optional, default = 'asc'):The direction in which the files are ordered. Options are 'asc' or 'desc'.
   - `filters` (Record<string, any>, optional, default = {}): An object of filters to apply to the file list query.
-  - `include_raw_file` (boolean, optional, default = false): If set to true, includes raw file's presigned url in the response.
-  - `include_parsed_file` (boolean, optional, default = false): If set to true, includes parsed file's presigned url in the response.
+  - `include_raw_file` (boolean, optional, default = false): If set to true, includes the presigned URL for the raw file in the response.
+  - `include_parsed_file` (boolean, optional, default = false): If set to true, includes the presigned URL for the parsed file in the response.
 
-- **Returns**: A promise that resolves to an `GetUserFilesResponse` object:
+- **Returns**: A promise that resolves to an `GetUserFilesResponse` object with the following properties:
 
-  - status (number): HTTP status code of the response.
+  - status (number): The HTTP status code of the response.
   - data (object or null):
     - files (any[]): An array of user file data objects.
-  - error (string or null): Error message if there's an issue fetching user files.
+  - error (string or null): An error message if there are issues with fetching user files.
 
 - **Usage**:
 
@@ -756,21 +756,21 @@ fetchUserIntegrations();
 
 ### 17. deleteTags()
 
-- **Description**: Deletes specified tags from a user file in the given organization. The method makes a request to the Carbon service and attempts to remove the provided tags from the file with the specified `organizationUserFileId`.
+- **Description**: This function removes specified tags from a user file within the given organization. The method sends a request to the Carbon service to delete the provided tags from the file associated with the `organizationUserFileId`.
 
-- **Parameters**: The `deleteTags()` method accepts an object with the following properties:
+- **Parameters**: The `deleteTags()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `organizationUserFileId` (number): The unique identifier of the user file within the organization.
-  - `tags` (string[]): An array of tag names that are to be deleted from the user file.
+  - `tags` (string[]): An array of tag names to be deleted from the user file.
 
-- **Returns**: A promise that resolves to an `DeleteTagsResponse` object:
+- **Returns**: A promise that resolves to an `DeleteTagsResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
-  - `data` (object or null): The response data object from the Carbon service after deleting the tags.
-  - `error` (string or null): Error message if there's an issue deleting the tags from the user file.
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): The response data received from the Carbon service after the tags have been deleted.
+  - `error` (string or null): An error message in case there are issues with the deletion of tags from the user file.
 
-- **Usage**: Here's how you can use the `generateAccessToken()` method
+- **Usage**: Below is an example of how to use the `generateAccessToken()` method
 
   ```javascript
   const Carbon = require('carbon-connect-js');
@@ -797,20 +797,20 @@ fetchUserIntegrations();
 
 ### 18. fetchUrls()
 
-- **Description**: This method retrieves all URLs from a specified web page. It sends a GET request to the Carbon service with the target URL as a parameter. The Carbon service will then fetch the content of the specified web page and parse it to extract all URLs.
+- **Description**: This method retrieves all URLs from a specified web page. It initiates a GET request to the Carbon service with the target URL as a parameter. The Carbon service will then access the content of the specified web page and parse it to extract all the URLs.
 
-- **Parameters**: The `fetchUrls()` method accepts an object with the following properties:
+- **Parameters**: The `fetchUrls()` method requires an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `url` (string): The web page's URL from which the links need to be fetched.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `url` (string): The URL of the web page from which the links should be fetched.
 
-- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+- **Returns**: A promise that resolves to an `AccessTokenResponse` object comprising the following properties:
 
-  - status (number): HTTP status code of the response.
-  - data (object or null): The response data object containing the URLs and potentially the raw HTML content.
+  - status (number): The HTTP status code of the response.
+  - data (object or null): The response data object containing the extracted URLs and potentially the raw HTML content.
     - urls (string[]): A list of URLs extracted from the web page.
     - html_content (string or null): The raw HTML content of the fetched web page (if provided by the Carbon service).
-  - error (string or null): Error message if there's an issue fetching the URLs.
+  - error (string or null): An error message in case there are issues with fetching the URLs.
 
 - **Usage**:
 
@@ -841,20 +841,29 @@ fetchUserIntegrations();
 
 ### 19. searchUrls()
 
-- **Description**: This method performs a search for URLs based on the provided query string.
+- **Description**: This method conducts a search for URLs based on the provided query string.
+
+  As an illustration, when you perform a search for “content related to MRNA,” you will receive a list of links such as the following:
+
+  - https://tomrenz.substack.com/p/mrna-and-why-it-matters
+  - https://www.statnews.com/2020/11/10/the-story-of-mrna-how-a-once-dismissed-idea-became-a-leading-technology-in-the-covid-vaccine-race/
+  - https://www.statnews.com/2022/11/16/covid-19-vaccines-were-a-success-but-mrna-still-has-a-delivery-problem/
+  - https://joomi.substack.com/p/were-still-being-misled-about-how
+
+  Subsequently, you can submit these links to the `web_scrape` endpoint in order to retrieve the content of the respective web pages.
 
 - **Parameters**: The `searchUrls()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `query` (string): The search term or query for which URLs need to be found.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `query` (string): The search term or query for which URLs are to be discovered.
 
-- **Returns**: A promise that resolves to an `SearchUrlsForQueryResponse` object:
+- **Returns**: A promise that resolves to an `SearchUrlsForQueryResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
-  - `data` (object or null): The response data object containing the URLs.
-    - `urls` (string[]): A list of URLs related to the search query.
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): The response data object containing the discovered URLs.
+    - `urls` (string[]): A list of URLs associated with the search query.
     - `html_content` (null): A null value is returned.
-  - `error` (string or null): Error message if there's an issue searching for the URLs.
+  - `error` (string or null): An error message if there are any issues with the URL search.
 
 - **Usage**:
 
@@ -887,17 +896,19 @@ fetchUserIntegrations();
 
 - **Description**: This method retrieves the transcript for a specific YouTube video.
 
+  **Example:** In the URL https://www.youtube.com/watch?v=_Nq2m5LRQ3g&t=1080s, the video id is `_Nq2m5LRQ3`
+
 - **Parameters**: The `fetchYoutubeTranscript()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `videoId` (string): The YouTube video's unique identifier.
-  - `raw` (boolean, optional): A flag indicating whether to fetch the raw transcript (default is false, indicating omly processed transcript is fetched).
+  - `accessToken` (string): The access token obtained through authentication.
+  - `videoId` (string): The unique identifier of the YouTube video.
+  - `raw` (boolean, optional): A flag indicating whether to fetch the raw transcript (default is false, indicating that only the processed transcript is fetched).
 
-- **Returns**: A promise that resolves to an `FetchYoutubeTranscriptsResponse` object:
+- **Returns**: A promise that resolves to an `FetchYoutubeTranscriptsResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): The response data object containing the transcript information.
-  - `error` (string or null): Error message if there's an issue fetching the transcript.
+  - `error` (string or null): An error message if there are any issues with fetching the transcript.
 
 - **Usage**:
 
@@ -929,28 +940,30 @@ fetchUserIntegrations();
 
 ### 21. getEmbeddingsfetchUrls()
 
-- **Description**: This method is used to fetch embeddings based on a provided query.
+- **Description**: This method is utilized to retrieve embeddings based on a provided query.
 
 - **Parameters**: The `getEmbeddings()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `query` (string): The search query.
   - `queryVector` (number[] or null, optional): The query vector.
-  - `k` (number): Number of nearest embeddings to retrieve.
-  - `filesIds` (number[] or null, optional): Array of file IDs.
-  - `parentFileIds` (number[] or null, optional): Array of parent file IDs.
+  - `k` (number): The number of nearest embeddings to retrieve.
+  - `filesIds` (number[] or null, optional): An array of file IDs.
+  - `parentFileIds` (number[] or null, optional): An array of parent file IDs.
   - `tags` (Record<string, any> or null, optional): Tags associated with the embeddings.
-  - `includeTags` (boolean or null, optional): Flag to include tags.
-  - `includeVectors` (boolean or null, optional): Flag to include vectors.
-  - `includeRawFile` (boolean or null, optional): Flag to include raw file.
-  - `hybridSearch` (boolean or null, optional): Flag to indicate hybrid search.
-  - `hybridSearchTuningParameters` (HybridSearchParams or null, optional): Parameters to fine-tune the hybrid search.
+  - `includeTags` (boolean or null, optional): A flag to include tags.
+  - `includeVectors` (boolean or null, optional): A flag to include vectors.
+  - `includeRawFile` (boolean or null, optional): A flag to include raw file.
+  - `hybridSearch` (boolean or null, optional): A flag to indicate hybrid search.
+  - `hybridSearchTuningParameters` (HybridSearchParams or null, optional): Parameters for fine-tuning hybrid search. The following properties are available:
+    - `weightA`
+    - `weightB`
 
-- **Returns**: A promise that resolves to an `GetEmbeddingsResponse` object:
+- **Returns**: A promise that resolves to an `GetEmbeddingsResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): The response data containing the embeddings information.
-  - `error` (string or null): Error message if there's an issue fetching the embeddings.
+  - `error` (string or null): An error message if there's an issue fetching the embeddings.
 
 - **Usage**:
 
@@ -983,11 +996,11 @@ fetchUserIntegrations();
 
 ### 22. getTextChunks()
 
-- **Description**: This method retrieves all URLs from a specified web page. It sends a GET request to the Carbon service with the target URL as a parameter. The Carbon service will then fetch the content of the specified web page and parse it to extract all URLs.
+- **Description**: This method fetches text chunks based on the specified user file ID and other optional parameters.
 
 - **Parameters**: The `getTextChunks()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
+  - `accessToken` (string): The access token obtained through authentication.
   - `userFileId` (number): ID of the user file for which text chunks are being fetched.
   - `limit` (number, optional): Maximum number of text chunks to retrieve. Defaults to 10.
   - `offset` (number, optional): The number to start the fetch from. Useful for pagination. Defaults to 0.
@@ -995,9 +1008,9 @@ fetchUserIntegrations();
   - `orderDir` (string, optional): Direction of the order ('asc' or 'desc'). Defaults to 'asc'.
   - `includeVectors` (boolean, optional): Flag to indicate whether to include vectors in the response. Defaults to false.
 
-- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+- **Returns**: A promise that resolves to an `GetTextChunksResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
+  - `status` (number): The HTTP status code of the response.
   - `data` (object or null): The response data containing the text chunks information.
   - `error` (string or null): Error message if there's an issue fetching the text chunks.
 
@@ -1032,24 +1045,24 @@ fetchUserIntegrations();
 
 ### 23. getUserDataSources()
 
-- **Description**: This method fetches user data sources based on the provided parameters.
+- **Description**: This method retrieves user data sources based on the provided parameters.
 
 - **Parameters**: The `getUserDataSources()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `limit` (number, optional): Maximum number of data sources to retrieve. Defaults to 10.
-  - `offset` (number, optional): The number to start the fetch from. Useful for pagination. Defaults to 0.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `limit` (number, optional): The maximum number of data sources to retrieve. Defaults to 10.
+  - `offset` (number, optional): The starting point for the fetch, useful for pagination. Defaults to 0.
   - `orderBy` (string, optional): The column name to order the results by. Defaults to 'updated_at'.
-  - `orderDir` (string, optional): Direction of the order ('asc' or 'desc'). Defaults to 'asc'.
-  - `sourceType` (string, optional): Type of data source to filter the results by.
-  - `sourceIds` (number[] or null, optional): Array of specific data source IDs to retrieve.
-  - `revokedAccess` (boolean or null, optional): Flag to filter data sources based on revoked access.
+  - `orderDir` (string, optional): The direction of the order ('asc' or 'desc'). Defaults to 'asc'.
+  - `sourceType` (string, optional): The type of data source to filter the results by.
+  - `sourceIds` (number[] or null, optional): An array of specific data source IDs to retrieve.
+  - `revokedAccess` (boolean or null, optional): A flag to filter data sources based on revoked access.
 
-- **Returns**: A promise that resolves to an `AccessTokenResponse` object:
+- **Returns**: A promise that resolves to an `AccessTokenResponse` object with the following properties:
 
-  - status (number): HTTP status code of the response.
+  - status (number): The HTTP status code of the response.
   - data (object or null): The response data containing user data sources information.
-  - error (string or null): Error message if there's an issue fetching the user data sources.
+  - error (string or null): An error message if there's an issue fetching the user data sources.
 
 - **Usage**:
 
@@ -1084,18 +1097,18 @@ fetchUserIntegrations();
 
 ### 24. revokeAccessToDataSource()
 
-- **Description**: This method revokes access to a specified data source.
+- **Description**: This method revokes user access to a specified data source. The user will need to re-authenticate after access is revoked.
 
 - **Parameters**: The `revokeAccessToDataSource()` method accepts an object with the following properties:
 
-  - `accessToken` (string): The access token obtained from authentication.
-  - `dataSourceId` (number): The ID of the data source to which access should be revoked.
+  - `accessToken` (string): The access token obtained through authentication.
+  - `dataSourceId` (number): The ID of the data source for which access should be revoked.
 
-- **Returns**: A promise that resolves to an `RevokeAccessToDataSourceResponse` object:
+- **Returns**: A promise that resolves to an `RevokeAccessToDataSourceResponse` object with the following properties:
 
-  - `status` (number): HTTP status code of the response.
-  - `data` (object or null): The response data indicating the outcome of the revoke access request.
-  - `error` (string or null): Error message if there's an issue revoking access to the data source.
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): The response data indicating the outcome of the access revocation request.
+  - `error` (string or null): An error message if there are any issues with revoking access to the data source.
 
 - **Usage**:
 
