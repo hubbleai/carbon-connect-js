@@ -74,6 +74,7 @@ export interface UploadFilesParams {
   chunkSize?: number;
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
+  setPageAsBoundary?: boolean;
   environment?: Environment;
 }
 
@@ -196,7 +197,8 @@ export interface GetUserFilesParams {
 export interface GetUserFilesResponse {
   status: number;
   data: {
-    files: any[];
+    results: any[];
+    count: number;
   } | null;
   error: string | null;
 }

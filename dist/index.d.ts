@@ -6,7 +6,7 @@ declare const generateAccessToken: ({ apiKey, customerId, environment, }: Access
 declare const getWhiteLabelData: ({ accessToken, environment, }: WhiteLabelDataParams) => Promise<WhiteLabelDataResponse>;
 declare const getUserConnections: ({ accessToken, environment, }: UserConnectionsParams) => Promise<UserConnectionsResponse>;
 declare const generateOauthurl: ({ accessToken, integrationName, chunkSize, chunkOverlap, skipEmbeddingGeneration, tags, environment, }: GenerateOAuthURLParams) => Promise<GenerateOAuthURLResponse>;
-declare const uploadFiles: ({ accessToken, files, chunkSize, chunkOverlap, skipEmbeddingGeneration, environment, }: UploadFilesParams) => Promise<UploadFilesResponse>;
+declare const uploadFiles: ({ accessToken, files, chunkSize, chunkOverlap, skipEmbeddingGeneration, setPageAsBoundary, environment, }: UploadFilesParams) => Promise<UploadFilesResponse>;
 declare const uploadFileFromUrl: ({ accessToken, url, fileName, chunkSize, chunkOverlap, skipEmbeddingGeneration, environment, }: UploadFileFromUrlParams) => Promise<UploadFileFromUrlResponse>;
 declare const uploadText: ({ accessToken, contents, fileName, chunkSize, chunkOverlap, skipEmbeddingGeneration, overWriteFileId, environment, }: UploadTextParams) => Promise<UploadTextResponse>;
 declare const deleteFile: ({ accessToken, fileId, environment, }: DeleteFileParams) => Promise<DeleteFileResponse>;

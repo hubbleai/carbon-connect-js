@@ -277,6 +277,7 @@ const uploadFiles = async ({
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
+  setPageAsBoundary = false,
   environment = 'PRODUCTION',
 }: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
@@ -316,7 +317,7 @@ const uploadFiles = async ({
           }
 
           const uploadResponse = await fetch(
-            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}`,
+            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}&set_page_as_boundary=${setPageAsBoundary}`,
             {
               method: 'POST',
               body: formData,
