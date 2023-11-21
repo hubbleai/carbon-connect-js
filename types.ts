@@ -52,6 +52,12 @@ export interface GenerateOAuthURLParams {
   skipEmbeddingGeneration?: boolean;
   // TODO: Get the types from carbon connect package
   tags?: Record<string, any>;
+  optionalParams?: {
+    zendeskSubdomain?: string;
+    confluenceSubdomain?: string;
+    microsoftTenant?: string;
+    sharepointSiteName?: string;
+  };
   environment?: Environment;
 }
 

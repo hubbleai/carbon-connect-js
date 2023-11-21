@@ -42,6 +42,12 @@ export interface GenerateOAuthURLParams {
     chunkOverlap?: number;
     skipEmbeddingGeneration?: boolean;
     tags?: Record<string, any>;
+    optionalParams?: {
+        zendeskSubdomain?: string;
+        confluenceSubdomain?: string;
+        microsoftTenant?: string;
+        sharepointSiteName?: string;
+    };
     environment?: Environment;
 }
 export interface GenerateOAuthURLResponse {

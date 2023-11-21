@@ -58,6 +58,40 @@ export const BASE_URL: Record<string, string> = {
   LOCAL: 'http://localhost:8000',
 };
 
+function pickRelevantIntegrationParams(integrationName: string, params: any) {
+  switch (integrationName) {
+    case 'ZENDESK':
+      if (!params.zendeskSubdomain) {
+        throw new Error(
+          'Zendesk integration requires a zendeskSubdomain parameter.'
+        );
+      }
+      return { zendesk_subdomain: params.zendeskSubdomain };
+
+    case 'CONFLUENCE':
+      if (!params.confluenceSubdomain) {
+        throw new Error(
+          'Confluence integration requires a confluenceSubdomain parameter.'
+        );
+      }
+      return { confluence_subdomain: params.confluenceSubdomain };
+
+    case 'SHAREPOINT':
+      if (!params.microsoftTenant || !params.sharepointSiteName) {
+        throw new Error(
+          'Microsoft integration requires both microsoftTenant and sharepointSiteName parameters.'
+        );
+      }
+      return {
+        microsoft_tenant: params.microsoftTenant,
+        sharepoint_site_name: params.sharepointSiteName,
+      };
+
+    default:
+      return {};
+  }
+}
+
 const getCarbonHealth = async ({
   environment = 'PRODUCTION',
 }: getCarbonHealthParams): Promise<getCarbonHealthResponse> => {
@@ -220,9 +254,19 @@ const generateOauthurl = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   tags = {},
+  optionalParams = {},
   environment = 'PRODUCTION',
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
+    const requestBody = {
+      tags: tags,
+      service: integrationName,
+      chunk_size: chunkSize,
+      chunk_overlap: chunkOverlap,
+      skip_embedding_generation: skipEmbeddingGeneration,
+      ...pickRelevantIntegrationParams(integrationName, optionalParams),
+    };
+
     const oAuthURLResponse = await fetch(
       `${BASE_URL[environment]}/integrations/oauth_url`,
       {
@@ -231,13 +275,7 @@ const generateOauthurl = async ({
           'Content-Type': 'application/json',
           authorization: `Token ${accessToken}`,
         },
-        body: JSON.stringify({
-          tags: tags,
-          service: integrationName,
-          chunk_size: chunkSize,
-          chunk_overlap: chunkOverlap,
-          skip_embedding_generation: skipEmbeddingGeneration,
-        }),
+        body: JSON.stringify(requestBody),
       }
     );
 
@@ -262,11 +300,11 @@ const generateOauthurl = async ({
         error: 'Error generating OAuth URL. Please try again.',
       };
     }
-  } catch (err) {
+  } catch (err: any) {
     return {
       status: 400,
       data: null,
-      error: 'Error generating OAuth URL. Please try again.',
+      error: err?.message || 'Error generating OAuth URL. Please try again.',
     };
   }
 };
