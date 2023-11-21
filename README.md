@@ -180,7 +180,7 @@ fetchUserIntegrations();
       const response = await Carbon.generateOauthurl({
         accessToken: 'YOUR_ACCESS_TOKEN',
         integrationName: 'SERVICE_NAME',
-        // Accepted values are: NOTION, GOOGLE_DRIVE, ONEDRIVE, INTERCOM, DROPBOX, ZENDESK, BOX
+        // Accepted values are: NOTION, GOOGLE_DRIVE, ONEDRIVE, INTERCOM, DROPBOX, ZENDESK, BOX, CONFLUENCE, SHAREPOINT
       });
 
       if (response.status === 200) {
