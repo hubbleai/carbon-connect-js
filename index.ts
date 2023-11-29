@@ -1020,6 +1020,7 @@ const submitScrapeRequest = async (
       chunkOverlap = 20,
       skipEmbeddingGeneration = false,
       environment = 'PRODUCTION',
+      enableAutoSync = false,
     } = params;
 
     const urlPattern = new RegExp(
@@ -1050,6 +1051,7 @@ const submitScrapeRequest = async (
       chunk_size: chunkSize,
       chunk_overlap: chunkOverlap,
       skip_embedding_generation: skipEmbeddingGeneration,
+      enable_auto_sync: enableAutoSync,
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {

@@ -304,6 +304,7 @@ export interface SubmitScrapeRequestParams {
   chunkSize?: number;
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
+  enableAutoSync?: boolean;
   environment?: Environment;
 }
 
