@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/hubbleai/carbon-connect-js#readme",
   "devDependencies": {
-    "@babel/core": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/core": ">=7.23.2",
+    "@babel/preset-env": ">=7.23.2",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
