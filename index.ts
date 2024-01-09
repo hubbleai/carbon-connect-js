@@ -1,4 +1,3 @@
-// import { allowedFileTypes, BASE_URL } from './constants';
 import {
   getCarbonHealthParams,
   getCarbonHealthResponse,
@@ -50,7 +49,30 @@ import {
   RevokeAccessToDataSourceResponse,
 } from './types';
 
-export const allowedFileTypes = ['pdf', 'docx', 'txt', 'csv', 'md', 'pptx'];
+export const allowedFileTypes = [
+  'pdf',
+  'docx',
+  'txt',
+  'csv',
+  'md',
+  'pptx',
+  'tsv',
+  'xlsx',
+  'rtf',
+  'jpg',
+  'png',
+  'mp3',
+  'mp4',
+  'mp2',
+  'aac',
+  'wav',
+  'flac',
+  'pcm',
+  'm4a',
+  'ogg',
+  'opus',
+  'webm',
+];
 
 export const BASE_URL: Record<string, string> = {
   PRODUCTION: 'https://api.carbon.ai',
@@ -255,6 +277,7 @@ const generateOauthurl = async ({
   skipEmbeddingGeneration = false,
   tags = {},
   optionalParams = {},
+  embeddingModel = 'OPENAI',
   environment = 'PRODUCTION',
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
@@ -264,6 +287,7 @@ const generateOauthurl = async ({
       chunk_size: chunkSize,
       chunk_overlap: chunkOverlap,
       skip_embedding_generation: skipEmbeddingGeneration,
+      embedding_model: embeddingModel,
       ...pickRelevantIntegrationParams(integrationName, optionalParams),
     };
 
@@ -316,6 +340,9 @@ const uploadFiles = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   setPageAsBoundary = false,
+  embeddingModel = 'OPENAI',
+  useOCR = false,
+  generateSparseVectors = false,
   environment = 'PRODUCTION',
 }: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
@@ -354,8 +381,27 @@ const uploadFiles = async ({
             return;
           }
 
+          const apiUrl = new URL(`${BASE_URL[environment]}/uploadfile`);
+
+          apiUrl.searchParams.append('chunk_size', chunkSize.toString());
+          apiUrl.searchParams.append('chunk_overlap', chunkOverlap.toString());
+          apiUrl.searchParams.append(
+            'skip_embedding_generation',
+            skipEmbeddingGeneration.toString()
+          );
+          apiUrl.searchParams.append(
+            'set_page_as_boundary',
+            setPageAsBoundary.toString()
+          );
+          apiUrl.searchParams.append('embedding_model', embeddingModel);
+          apiUrl.searchParams.append('use_ocr', useOCR.toString());
+          apiUrl.searchParams.append(
+            'generate_sparse_vectors',
+            generateSparseVectors.toString()
+          );
           const uploadResponse = await fetch(
-            `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}&set_page_as_boundary=${setPageAsBoundary}`,
+            // `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}&set_page_as_boundary=${setPageAsBoundary}&embedding_model=${embeddingModel}&use_ocr=${useOCR}&generate_sparse_vectors=${generateSparseVectors}`,
+            apiUrl.toString(),
             {
               method: 'POST',
               body: formData,
@@ -424,6 +470,7 @@ const uploadFileFromUrl = async ({
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
+  embeddingModel = 'OPENAI',
   environment = 'PRODUCTION',
 }: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
   try {
@@ -437,6 +484,7 @@ const uploadFileFromUrl = async ({
           chunk_size: chunkSize,
           chunk_overlap: chunkOverlap,
           skip_embedding_generation: skipEmbeddingGeneration,
+          embedding_model: embeddingModel,
         }),
         headers: {
           Authorization: `Token ${accessToken}`,
@@ -478,6 +526,7 @@ const uploadText = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   overWriteFileId = null,
+  embeddingModel = 'OPENAI',
   environment = 'PRODUCTION',
 }: UploadTextParams): Promise<UploadTextResponse> => {
   try {
@@ -490,6 +539,7 @@ const uploadText = async ({
         chunk_overlap: chunkOverlap,
         skip_embedding_generation: skipEmbeddingGeneration,
         overwrite_file_id: overWriteFileId,
+        embedding_model: embeddingModel,
       }),
       headers: {
         Authorization: `Token ${accessToken}`,

@@ -1,5 +1,16 @@
 export type Environment = 'PRODUCTION' | 'DEVELOPMENT' | 'LOCAL';
 
+export type TextEmbeddingModel =
+  | 'OPENAI'
+  | 'AZURE_OPENAI'
+  | 'COHERE_MULTILINGUAL_V3';
+
+export type EmbeddingModel =
+  | 'OPENAI'
+  | 'AZURE_OPENAI'
+  | 'COHERE_MULTILINGUAL_V3'
+  | 'VERTEX_MULTIMODAL';
+
 export interface getCarbonHealthParams {
   environment?: Environment;
 }
@@ -50,6 +61,7 @@ export interface GenerateOAuthURLParams {
   chunkSize?: number;
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
+  embeddingModel?: EmbeddingModel;
   // TODO: Get the types from carbon connect package
   tags?: Record<string, any>;
   optionalParams?: {
@@ -81,6 +93,9 @@ export interface UploadFilesParams {
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
   setPageAsBoundary?: boolean;
+  embeddingModel?: EmbeddingModel;
+  useOCR?: boolean;
+  generateSparseVectors?: boolean;
   environment?: Environment;
 }
 
@@ -104,6 +119,7 @@ export interface UploadFileFromUrlParams {
   chunkSize?: number;
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
+  embeddingModel?: EmbeddingModel;
   environment?: Environment;
 }
 
@@ -123,6 +139,7 @@ export interface UploadTextParams {
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
   overWriteFileId?: number | null;
+  embeddingModel?: TextEmbeddingModel;
   environment?: Environment;
 }
 
