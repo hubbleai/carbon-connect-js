@@ -60,6 +60,7 @@ export const allowedFileTypes = [
   'xlsx',
   'rtf',
   'jpg',
+  'jpeg',
   'png',
   'mp3',
   'mp4',
