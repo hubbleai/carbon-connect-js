@@ -279,6 +279,7 @@ const generateOauthurl = async ({
   tags = {},
   optionalParams = {},
   embeddingModel = 'OPENAI',
+  generateSparseVectors = false,
   environment = 'PRODUCTION',
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
@@ -289,6 +290,7 @@ const generateOauthurl = async ({
       chunk_overlap: chunkOverlap,
       skip_embedding_generation: skipEmbeddingGeneration,
       embedding_model: embeddingModel,
+      generate_sparse_vectors: generateSparseVectors,
       ...pickRelevantIntegrationParams(integrationName, optionalParams),
     };
 
@@ -472,6 +474,7 @@ const uploadFileFromUrl = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   embeddingModel = 'OPENAI',
+  generateSparseVectors = false,
   environment = 'PRODUCTION',
 }: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
   try {
@@ -486,6 +489,7 @@ const uploadFileFromUrl = async ({
           chunk_overlap: chunkOverlap,
           skip_embedding_generation: skipEmbeddingGeneration,
           embedding_model: embeddingModel,
+          generate_sparse_vectors: generateSparseVectors,
         }),
         headers: {
           Authorization: `Token ${accessToken}`,
@@ -528,6 +532,7 @@ const uploadText = async ({
   skipEmbeddingGeneration = false,
   overWriteFileId = null,
   embeddingModel = 'OPENAI',
+  generateSparseVectors = false,
   environment = 'PRODUCTION',
 }: UploadTextParams): Promise<UploadTextResponse> => {
   try {
@@ -541,6 +546,7 @@ const uploadText = async ({
         skip_embedding_generation: skipEmbeddingGeneration,
         overwrite_file_id: overWriteFileId,
         embedding_model: embeddingModel,
+        generate_sparse_vectors: generateSparseVectors,
       }),
       headers: {
         Authorization: `Token ${accessToken}`,
@@ -1072,6 +1078,7 @@ const submitScrapeRequest = async (
       skipEmbeddingGeneration = false,
       environment = 'PRODUCTION',
       enableAutoSync = false,
+      generateSparseVectors = false,
     } = params;
 
     const urlPattern = new RegExp(
@@ -1103,6 +1110,7 @@ const submitScrapeRequest = async (
       chunk_overlap: chunkOverlap,
       skip_embedding_generation: skipEmbeddingGeneration,
       enable_auto_sync: enableAutoSync,
+      generate_sparse_vectors: generateSparseVectors,
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {

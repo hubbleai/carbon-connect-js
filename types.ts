@@ -62,6 +62,7 @@ export interface GenerateOAuthURLParams {
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
   embeddingModel?: EmbeddingModel;
+  generateSparseVectors?: boolean;
   // TODO: Get the types from carbon connect package
   tags?: Record<string, any>;
   optionalParams?: {
@@ -120,6 +121,7 @@ export interface UploadFileFromUrlParams {
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
   embeddingModel?: EmbeddingModel;
+  generateSparseVectors?: boolean;
   environment?: Environment;
 }
 
@@ -140,6 +142,7 @@ export interface UploadTextParams {
   skipEmbeddingGeneration?: boolean;
   overWriteFileId?: number | null;
   embeddingModel?: TextEmbeddingModel;
+  generateSparseVectors?: boolean;
   environment?: Environment;
 }
 
@@ -322,6 +325,7 @@ export interface SubmitScrapeRequestParams {
   chunkOverlap?: number;
   skipEmbeddingGeneration?: boolean;
   enableAutoSync?: boolean;
+  generateSparseVectors?: boolean;
   environment?: Environment;
 }
 
