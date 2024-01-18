@@ -63,7 +63,7 @@ export interface GenerateOAuthURLParams {
   skipEmbeddingGeneration?: boolean;
   embeddingModel?: EmbeddingModel;
   generateSparseVectors?: boolean;
-  prependTitleToChunks?: boolean;
+  prependFilenameToChunks?: boolean;
   // TODO: Get the types from carbon connect package
   tags?: Record<string, any>;
   optionalParams?: {
@@ -98,7 +98,7 @@ export interface UploadFilesParams {
   embeddingModel?: EmbeddingModel;
   useOCR?: boolean;
   generateSparseVectors?: boolean;
-  prependTitleToChunks?: boolean;
+  prependFilenameToChunks?: boolean;
   environment?: Environment;
 }
 
@@ -124,7 +124,7 @@ export interface UploadFileFromUrlParams {
   skipEmbeddingGeneration?: boolean;
   embeddingModel?: EmbeddingModel;
   generateSparseVectors?: boolean;
-  prependTitleToChunks?: boolean;
+  prependFilenameToChunks?: boolean;
   environment?: Environment;
 }
 
@@ -329,7 +329,7 @@ export interface SubmitScrapeRequestParams {
   skipEmbeddingGeneration?: boolean;
   enableAutoSync?: boolean;
   generateSparseVectors?: boolean;
-  prependTitleToChunks?: boolean;
+  prependFilenameToChunks?: boolean;
   skipHTMLTags?: string[];
   skipCSSClasses?: string[];
   environment?: Environment;

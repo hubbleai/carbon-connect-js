@@ -280,7 +280,7 @@ const generateOauthurl = async ({
   optionalParams = {},
   embeddingModel = 'OPENAI',
   generateSparseVectors = false,
-  prependTitleToChunks = false,
+  prependFilenameToChunks = false,
   environment = 'PRODUCTION',
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
@@ -292,6 +292,7 @@ const generateOauthurl = async ({
       skip_embedding_generation: skipEmbeddingGeneration,
       embedding_model: embeddingModel,
       generate_sparse_vectors: generateSparseVectors,
+      prepend_filename_to_chunks: prependFilenameToChunks,
       ...pickRelevantIntegrationParams(integrationName, optionalParams),
     };
 
@@ -347,7 +348,7 @@ const uploadFiles = async ({
   embeddingModel = 'OPENAI',
   useOCR = false,
   generateSparseVectors = false,
-  prependTitleToChunks = false,
+  prependFilenameToChunks = false,
   environment = 'PRODUCTION',
 }: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
@@ -403,6 +404,10 @@ const uploadFiles = async ({
           apiUrl.searchParams.append(
             'generate_sparse_vectors',
             generateSparseVectors.toString()
+          );
+          apiUrl.searchParams.append(
+            'prepend_filename_to_chunks',
+            prependFilenameToChunks.toString()
           );
           const uploadResponse = await fetch(
             // `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}&set_page_as_boundary=${setPageAsBoundary}&embedding_model=${embeddingModel}&use_ocr=${useOCR}&generate_sparse_vectors=${generateSparseVectors}`,
@@ -477,7 +482,7 @@ const uploadFileFromUrl = async ({
   skipEmbeddingGeneration = false,
   embeddingModel = 'OPENAI',
   generateSparseVectors = false,
-  prependTitleToChunks = false,
+  prependFilenameToChunks = false,
   environment = 'PRODUCTION',
 }: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
   try {
@@ -493,6 +498,7 @@ const uploadFileFromUrl = async ({
           skip_embedding_generation: skipEmbeddingGeneration,
           embedding_model: embeddingModel,
           generate_sparse_vectors: generateSparseVectors,
+          prepend_filename_to_chunks: prependFilenameToChunks,
         }),
         headers: {
           Authorization: `Token ${accessToken}`,
@@ -1082,7 +1088,7 @@ const submitScrapeRequest = async (
       environment = 'PRODUCTION',
       enableAutoSync = false,
       generateSparseVectors = false,
-      prependTitleToChunks = false,
+      prependFilenameToChunks = false,
       skipHTMLTags = [],
       skipCSSClasses = [],
     } = params;
@@ -1117,7 +1123,7 @@ const submitScrapeRequest = async (
       skip_embedding_generation: skipEmbeddingGeneration,
       enable_auto_sync: enableAutoSync,
       generate_sparse_vectors: generateSparseVectors,
-      prepend_title_to_chunks: prependTitleToChunks,
+      prepend_title_to_chunks: prependFilenameToChunks,
       skip_html_tags: skipHTMLTags,
       skip_css_classes: skipCSSClasses,
     }));

@@ -45,7 +45,7 @@ export interface GenerateOAuthURLParams {
     skipEmbeddingGeneration?: boolean;
     embeddingModel?: EmbeddingModel;
     generateSparseVectors?: boolean;
-    prependTitleToChunks?: boolean;
+    prependFilenameToChunks?: boolean;
     tags?: Record<string, any>;
     optionalParams?: {
         zendeskSubdomain?: string;
@@ -77,7 +77,7 @@ export interface UploadFilesParams {
     embeddingModel?: EmbeddingModel;
     useOCR?: boolean;
     generateSparseVectors?: boolean;
-    prependTitleToChunks?: boolean;
+    prependFilenameToChunks?: boolean;
     environment?: Environment;
 }
 export interface UploadFilesResponse {
@@ -104,7 +104,7 @@ export interface UploadFileFromUrlParams {
     skipEmbeddingGeneration?: boolean;
     embeddingModel?: EmbeddingModel;
     generateSparseVectors?: boolean;
-    prependTitleToChunks?: boolean;
+    prependFilenameToChunks?: boolean;
     environment?: Environment;
 }
 export interface UploadFileFromUrlResponse {
@@ -281,7 +281,7 @@ export interface SubmitScrapeRequestParams {
     skipEmbeddingGeneration?: boolean;
     enableAutoSync?: boolean;
     generateSparseVectors?: boolean;
-    prependTitleToChunks?: boolean;
+    prependFilenameToChunks?: boolean;
     skipHTMLTags?: string[];
     skipCSSClasses?: string[];
     environment?: Environment;
