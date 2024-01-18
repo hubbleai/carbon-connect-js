@@ -282,8 +282,8 @@ export interface SubmitScrapeRequestParams {
     enableAutoSync?: boolean;
     generateSparseVectors?: boolean;
     prependFilenameToChunks?: boolean;
-    skipHTMLTags?: string[];
-    skipCSSClasses?: string[];
+    htmlTagsToSkip?: string[];
+    cssClassesToSkip?: string[];
     environment?: Environment;
 }
 export interface SubmitScrapeRequestResponse {

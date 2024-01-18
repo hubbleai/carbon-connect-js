@@ -1089,8 +1089,8 @@ const submitScrapeRequest = async (
       enableAutoSync = false,
       generateSparseVectors = false,
       prependFilenameToChunks = false,
-      skipHTMLTags = [],
-      skipCSSClasses = [],
+      htmlTagsToSkip = [],
+      cssClassesToSkip = [],
     } = params;
 
     const urlPattern = new RegExp(
@@ -1124,8 +1124,8 @@ const submitScrapeRequest = async (
       enable_auto_sync: enableAutoSync,
       generate_sparse_vectors: generateSparseVectors,
       prepend_title_to_chunks: prependFilenameToChunks,
-      skip_html_tags: skipHTMLTags,
-      skip_css_classes: skipCSSClasses,
+      html_tags_to_skip: htmlTagsToSkip,
+      css_classes_to_skip: cssClassesToSkip,
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {
