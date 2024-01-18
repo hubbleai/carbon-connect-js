@@ -280,6 +280,7 @@ const generateOauthurl = async ({
   optionalParams = {},
   embeddingModel = 'OPENAI',
   generateSparseVectors = false,
+  prependTitleToChunks = false,
   environment = 'PRODUCTION',
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
@@ -346,6 +347,7 @@ const uploadFiles = async ({
   embeddingModel = 'OPENAI',
   useOCR = false,
   generateSparseVectors = false,
+  prependTitleToChunks = false,
   environment = 'PRODUCTION',
 }: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
@@ -475,6 +477,7 @@ const uploadFileFromUrl = async ({
   skipEmbeddingGeneration = false,
   embeddingModel = 'OPENAI',
   generateSparseVectors = false,
+  prependTitleToChunks = false,
   environment = 'PRODUCTION',
 }: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
   try {
@@ -1079,6 +1082,9 @@ const submitScrapeRequest = async (
       environment = 'PRODUCTION',
       enableAutoSync = false,
       generateSparseVectors = false,
+      prependTitleToChunks = false,
+      skipHTMLTags = [],
+      skipCSSClasses = [],
     } = params;
 
     const urlPattern = new RegExp(
@@ -1111,6 +1117,9 @@ const submitScrapeRequest = async (
       skip_embedding_generation: skipEmbeddingGeneration,
       enable_auto_sync: enableAutoSync,
       generate_sparse_vectors: generateSparseVectors,
+      prepend_title_to_chunks: prependTitleToChunks,
+      skip_html_tags: skipHTMLTags,
+      skip_css_classes: skipCSSClasses,
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {

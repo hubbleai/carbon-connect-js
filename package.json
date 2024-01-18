@@ -1,6 +1,6 @@
 {
   "name": "carbon-connect-js",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A headless API wrapper of carbon.ai",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
