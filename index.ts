@@ -110,6 +110,17 @@ function pickRelevantIntegrationParams(integrationName: string, params: any) {
         sharepoint_site_name: params.sharepointSiteName,
       };
 
+    case 'FRESHDESK':
+      if (!params.freshdeskDomain || !params.freshdeskApiKey) {
+        throw new Error(
+          'Freshdesk integration requires a Domain parameter and an API key.'
+        );
+      }
+      return {
+        domain: params.freshdeskDomain,
+        api_key: params.freshdeskApiKey,
+      };
+
     default:
       return {};
   }
@@ -1387,6 +1398,9 @@ const revokeAccessToDataSource = async ({
 };
 
 export {
+  // Utility
+  pickRelevantIntegrationParams,
+
   // Health
   getCarbonHealth,
 

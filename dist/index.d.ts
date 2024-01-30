@@ -1,6 +1,42 @@
 import { getCarbonHealthParams, getCarbonHealthResponse, AccessTokenParams, AccessTokenResponse, WhiteLabelDataParams, WhiteLabelDataResponse, UserConnectionsParams, UserConnectionsResponse, GenerateOAuthURLParams, GenerateOAuthURLResponse, UploadFilesParams, UploadFilesResponse, UploadFileFromUrlParams, UploadFileFromUrlResponse, UpdateTagsParams, UpdateTagsResponse, ProcessSitemapUrlParams, ProcessSitemapUrlResponse, SubmitScrapeRequestParams, SubmitScrapeRequestResponse, UploadTextParams, UploadTextResponse, DeleteFileParams, DeleteFileResponse, GetRawFilePresignedUrlParams, GetRawFilePresignedUrlResponse, GetParsedFilePresignedUrlParams, GetParsedFilePresignedUrlResponse, GetUserFilesParams, GetUserFilesResponse, DeleteTagsParams, DeleteTagsResponse, ResyncFileParams, ResyncFileResponse, GetUrlsFromWebPageParams, GetUrlsFromWebPageResponse, SearchUrlsForQueryParams, SearchUrlsForQueryResponse, FetchYoutubeTranscriptsParams, FetchYoutubeTranscriptsResponse, GetEmbeddingsParams, GetEmbeddingsResponse, GetTextChunksParams, GetTextChunksResponse, GetUserDataSourcesParams, GetUserDataSourcesResponse, RevokeAccessToDataSourceParams, RevokeAccessToDataSourceResponse } from './types';
 export declare const allowedFileTypes: string[];
 export declare const BASE_URL: Record<string, string>;
+declare function pickRelevantIntegrationParams(integrationName: string, params: any): {
+    zendesk_subdomain: any;
+    confluence_subdomain?: undefined;
+    microsoft_tenant?: undefined;
+    sharepoint_site_name?: undefined;
+    domain?: undefined;
+    api_key?: undefined;
+} | {
+    confluence_subdomain: any;
+    zendesk_subdomain?: undefined;
+    microsoft_tenant?: undefined;
+    sharepoint_site_name?: undefined;
+    domain?: undefined;
+    api_key?: undefined;
+} | {
+    microsoft_tenant: any;
+    sharepoint_site_name: any;
+    zendesk_subdomain?: undefined;
+    confluence_subdomain?: undefined;
+    domain?: undefined;
+    api_key?: undefined;
+} | {
+    domain: any;
+    api_key: any;
+    zendesk_subdomain?: undefined;
+    confluence_subdomain?: undefined;
+    microsoft_tenant?: undefined;
+    sharepoint_site_name?: undefined;
+} | {
+    zendesk_subdomain?: undefined;
+    confluence_subdomain?: undefined;
+    microsoft_tenant?: undefined;
+    sharepoint_site_name?: undefined;
+    domain?: undefined;
+    api_key?: undefined;
+};
 declare const getCarbonHealth: ({ environment, }: getCarbonHealthParams) => Promise<getCarbonHealthResponse>;
 declare const generateAccessToken: ({ apiKey, customerId, environment, }: AccessTokenParams) => Promise<AccessTokenResponse>;
 declare const getWhiteLabelData: ({ accessToken, environment, }: WhiteLabelDataParams) => Promise<WhiteLabelDataResponse>;
@@ -25,4 +61,4 @@ declare const getEmbeddings: ({ accessToken, query, queryVector, k, filesIds, pa
 declare const getTextChunks: ({ accessToken, userFileId, limit, offset, orderBy, orderDir, includeVectors, environment, }: GetTextChunksParams) => Promise<GetTextChunksResponse>;
 declare const getUserDataSources: ({ accessToken, limit, offset, orderBy, orderDir, sourceType, sourceIds, revokedAccess, environment, }: GetUserDataSourcesParams) => Promise<GetUserDataSourcesResponse>;
 declare const revokeAccessToDataSource: ({ accessToken, dataSourceId, environment, }: RevokeAccessToDataSourceParams) => Promise<RevokeAccessToDataSourceResponse>;
-export { getCarbonHealth, generateAccessToken, getWhiteLabelData, getUserConnections, generateOauthurl, getUserDataSources, revokeAccessToDataSource, uploadFiles, uploadFileFromUrl, uploadText, deleteFile, getRawFilePresignedUrl, getParsedFilePresignedUrl, getUserFiles, resyncFile, updateTags, deleteTags, getEmbeddings, getTextChunks, processSitemapUrl, fetchUrls, searchUrls, fetchYoutubeTranscript, submitScrapeRequest, };
+export { pickRelevantIntegrationParams, getCarbonHealth, generateAccessToken, getWhiteLabelData, getUserConnections, generateOauthurl, getUserDataSources, revokeAccessToDataSource, uploadFiles, uploadFileFromUrl, uploadText, deleteFile, getRawFilePresignedUrl, getParsedFilePresignedUrl, getUserFiles, resyncFile, updateTags, deleteTags, getEmbeddings, getTextChunks, processSitemapUrl, fetchUrls, searchUrls, fetchYoutubeTranscript, submitScrapeRequest, };
