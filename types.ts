@@ -71,8 +71,6 @@ export interface GenerateOAuthURLParams {
     confluenceSubdomain?: string;
     microsoftTenant?: string;
     sharepointSiteName?: string;
-    freshdeskDomain?: string;
-    freshdeskApiKey?: string;
   };
   environment?: Environment;
 }

@@ -6,36 +6,21 @@ declare function pickRelevantIntegrationParams(integrationName: string, params: 
     confluence_subdomain?: undefined;
     microsoft_tenant?: undefined;
     sharepoint_site_name?: undefined;
-    domain?: undefined;
-    api_key?: undefined;
 } | {
     confluence_subdomain: any;
     zendesk_subdomain?: undefined;
     microsoft_tenant?: undefined;
     sharepoint_site_name?: undefined;
-    domain?: undefined;
-    api_key?: undefined;
 } | {
     microsoft_tenant: any;
     sharepoint_site_name: any;
     zendesk_subdomain?: undefined;
     confluence_subdomain?: undefined;
-    domain?: undefined;
-    api_key?: undefined;
-} | {
-    domain: any;
-    api_key: any;
-    zendesk_subdomain?: undefined;
-    confluence_subdomain?: undefined;
-    microsoft_tenant?: undefined;
-    sharepoint_site_name?: undefined;
 } | {
     zendesk_subdomain?: undefined;
     confluence_subdomain?: undefined;
     microsoft_tenant?: undefined;
     sharepoint_site_name?: undefined;
-    domain?: undefined;
-    api_key?: undefined;
 };
 declare const getCarbonHealth: ({ environment, }: getCarbonHealthParams) => Promise<getCarbonHealthResponse>;
 declare const generateAccessToken: ({ apiKey, customerId, environment, }: AccessTokenParams) => Promise<AccessTokenResponse>;

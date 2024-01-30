@@ -20,15 +20,6 @@ describe('pickRelevantIntegrationParams', () => {
     );
   });
 
-  it('should return correct params for FRESHDESK integration', () => {
-    const params = { freshdeskDomain: 'example', freshdeskApiKey: 'example' };
-
-    expect(pickRelevantIntegrationParams('FRESHDESK', params)).toEqual({
-      domain: 'example',
-      api_key: 'example',
-    });
-  });
-
   it('should return correct params for SHAREPOINT integration', () => {
     const params = {
       microsoftTenant: 'example',
