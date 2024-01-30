@@ -8,6 +8,18 @@ describe('pickRelevantIntegrationParams', () => {
     });
   });
 
+  it('should return empty object if integration is not supported', () => {
+    const params = { zendeskSubdomain: 'example' };
+    expect(pickRelevantIntegrationParams('NOT_SUPPORTED', params)).toEqual({});
+  });
+
+  it('should throw error if all params are not provided', () => {
+    const params = { zendeskSubdomainValue: 'example' };
+    expect(() => pickRelevantIntegrationParams('ZENDESK', params)).toThrow(
+      'Zendesk integration requires a zendeskSubdomain parameter.'
+    );
+  });
+
   it('should return correct params for FRESHDESK integration', () => {
     const params = { freshdeskDomain: 'example', freshdeskApiKey: 'example' };
 
