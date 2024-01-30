@@ -23,7 +23,6 @@ describe('pickRelevantIntegrationParams', () => {
   it('should return correct params for FRESHDESK integration', () => {
     const params = { freshdeskDomain: 'example', freshdeskApiKey: 'example' };
 
-    console.log(pickRelevantIntegrationParams('FRESHDESK', params));
     expect(pickRelevantIntegrationParams('FRESHDESK', params)).toEqual({
       domain: 'example',
       api_key: 'example',
