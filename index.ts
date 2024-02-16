@@ -47,6 +47,7 @@ import {
   GetUserDataSourcesResponse,
   RevokeAccessToDataSourceParams,
   RevokeAccessToDataSourceResponse,
+  DeleteFilesParams,
 } from './types';
 
 export const allowedFileTypes = [
@@ -588,6 +589,9 @@ const uploadText = async ({
   }
 };
 
+/**
+ * This function is in process of being removed and might not work as expected. Please use deleteFiles instead
+ */
 const deleteFile = async ({
   accessToken,
   fileId,
@@ -598,6 +602,49 @@ const deleteFile = async ({
       `${BASE_URL[environment]}/deletefile/${fileId}`,
       {
         method: 'DELETE',
+        headers: {
+          Authorization: `Token ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (deleteFileResponse.status === 200) {
+      const deleteFileResponseData = await deleteFileResponse.json();
+      return {
+        status: 200,
+        data: deleteFileResponseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: deleteFileResponse.status,
+        data: null,
+        error: 'Failed to delete file.',
+      };
+    }
+  } catch (err) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Failed to delete file.',
+    };
+  }
+};
+
+const deleteFiles = async ({
+  accessToken,
+  fileIds,
+  environment = 'PRODUCTION',
+}: DeleteFilesParams): Promise<DeleteFileResponse> => {
+  try {
+    const deleteFileResponse = await fetch(
+      `${BASE_URL[environment]}/delete_files`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          file_ids: fileIds,
+        }),
         headers: {
           Authorization: `Token ${accessToken}`,
           'Content-Type': 'application/json',
@@ -1091,6 +1138,8 @@ const submitScrapeRequest = async (
       prependFilenameToChunks = false,
       htmlTagsToSkip = [],
       cssClassesToSkip = [],
+      cssSelectorsToSkip = [],
+      embeddingModel = null,
     } = params;
 
     const urlPattern = new RegExp(
@@ -1126,6 +1175,8 @@ const submitScrapeRequest = async (
       prepend_title_to_chunks: prependFilenameToChunks,
       html_tags_to_skip: htmlTagsToSkip,
       css_classes_to_skip: cssClassesToSkip,
+      css_selectors_to_skip: cssSelectorsToSkip,
+      ...(embeddingModel && { embedding_model: embeddingModel }),
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {
@@ -1414,6 +1465,7 @@ export {
   getParsedFilePresignedUrl,
   getUserFiles,
   resyncFile,
+  deleteFiles,
 
   // Tags
   updateTags,
