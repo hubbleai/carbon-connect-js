@@ -1,6 +1,6 @@
 export type Environment = 'PRODUCTION' | 'DEVELOPMENT' | 'LOCAL';
-export type TextEmbeddingModel = 'OPENAI' | 'AZURE_OPENAI' | 'COHERE_MULTILINGUAL_V3';
-export type EmbeddingModel = 'OPENAI' | 'AZURE_OPENAI' | 'COHERE_MULTILINGUAL_V3' | 'VERTEX_MULTIMODAL';
+export type TextEmbeddingModel = 'OPENAI' | 'AZURE_OPENAI' | 'COHERE_MULTILINGUAL_V3' | 'OPENAI_ADA_LARGE_256' | 'OPENAI_ADA_LARGE_1024' | 'OPENAI_ADA_LARGE_3072' | 'OPENAI_ADA_SMALL_512' | 'OPENAI_ADA_SMALL_1536';
+export type EmbeddingModel = 'OPENAI' | 'AZURE_OPENAI' | 'COHERE_MULTILINGUAL_V3' | 'VERTEX_MULTIMODAL' | 'OPENAI_ADA_LARGE_256' | 'OPENAI_ADA_LARGE_1024' | 'OPENAI_ADA_LARGE_3072' | 'OPENAI_ADA_SMALL_512' | 'OPENAI_ADA_SMALL_1536';
 export interface getCarbonHealthParams {
     environment?: Environment;
 }
@@ -136,6 +136,11 @@ export interface UploadTextResponse {
 export interface DeleteFileParams {
     accessToken: string;
     fileId: string;
+    environment?: Environment;
+}
+export interface DeleteFilesParams {
+    accessToken: string;
+    fileIds: string[];
     environment?: Environment;
 }
 export interface DeleteFileResponse {
@@ -284,6 +289,8 @@ export interface SubmitScrapeRequestParams {
     prependFilenameToChunks?: boolean;
     htmlTagsToSkip?: string[];
     cssClassesToSkip?: string[];
+    cssSelectorsToSkip?: string[];
+    embeddingModel?: TextEmbeddingModel;
     environment?: Environment;
 }
 export interface SubmitScrapeRequestResponse {
