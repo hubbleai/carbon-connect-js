@@ -48,6 +48,7 @@ import {
   RevokeAccessToDataSourceParams,
   RevokeAccessToDataSourceResponse,
   DeleteFilesParams,
+  SubmitSitemapScrapeRequestParams,
 } from './types';
 
 export const allowedFileTypes = [
@@ -550,7 +551,7 @@ const uploadText = async ({
       method: 'POST',
       body: JSON.stringify({
         contents: contents,
-        file_name: fileName,
+        name: fileName,
         chunk_size: chunkSize,
         chunk_overlap: chunkOverlap,
         skip_embedding_generation: skipEmbeddingGeneration,
@@ -590,7 +591,7 @@ const uploadText = async ({
 };
 
 /**
- * This function is in process of being removed and might not work as expected. Please use deleteFiles instead
+ * We recommend using deleteFiles instead
  */
 const deleteFile = async ({
   accessToken,
@@ -1213,6 +1214,96 @@ const submitScrapeRequest = async (
   }
 };
 
+const submitSitemapScrapeRequest = async (
+  params: SubmitSitemapScrapeRequestParams
+): Promise<SubmitScrapeRequestResponse> => {
+  try {
+    const {
+      accessToken,
+      url,
+      tags = {},
+      recursionDepth = 1,
+      maxPagesToScrape = 1,
+      chunkSize = 1500,
+      chunkOverlap = 20,
+      skipEmbeddingGeneration = false,
+      environment = 'PRODUCTION',
+      enableAutoSync = false,
+      generateSparseVectors = false,
+      prependFilenameToChunks = false,
+      htmlTagsToSkip = [],
+      cssClassesToSkip = [],
+      cssSelectorsToSkip = [],
+      embeddingModel = null,
+    } = params;
+
+    const urlPattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ); // fragment locator
+
+    if (!urlPattern.test(url)) {
+      return {
+        status: 400,
+        data: null,
+        error: 'Please provide a valid URL.',
+      };
+    }
+
+    const requestObject = {
+      url: url,
+      tags: tags,
+      recursion_depth: recursionDepth,
+      max_pages_to_scrape: maxPagesToScrape,
+      chunk_size: chunkSize,
+      chunk_overlap: chunkOverlap,
+      skip_embedding_generation: skipEmbeddingGeneration,
+      enable_auto_sync: enableAutoSync,
+      generate_sparse_vectors: generateSparseVectors,
+      prepend_title_to_chunks: prependFilenameToChunks,
+      html_tags_to_skip: htmlTagsToSkip,
+      css_classes_to_skip: cssClassesToSkip,
+      css_selectors_to_skip: cssSelectorsToSkip,
+      ...(embeddingModel && { embedding_model: embeddingModel }),
+    };
+
+    const response = await fetch(`${BASE_URL[environment]}/scrape_sitemap`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Token ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestObject),
+    });
+
+    if (response.status === 200) {
+      const responseData = await response.json();
+      return {
+        status: 200,
+        data: responseData,
+        error: null,
+      };
+    } else {
+      return {
+        status: response.status,
+        data: null,
+        error: 'Error initiating scraping. Please try again.',
+      };
+    }
+  } catch (error) {
+    return {
+      status: 400,
+      data: null,
+      error: 'Error initiating scraping. Please try again.',
+    };
+  }
+};
+
 const getEmbeddings = async ({
   accessToken,
   query,
@@ -1481,4 +1572,5 @@ export {
   searchUrls,
   fetchYoutubeTranscript,
   submitScrapeRequest,
+  submitSitemapScrapeRequest,
 };

@@ -293,6 +293,24 @@ export interface SubmitScrapeRequestParams {
     embeddingModel?: TextEmbeddingModel;
     environment?: Environment;
 }
+export interface SubmitSitemapScrapeRequestParams {
+    accessToken: string;
+    url: string;
+    tags?: Record<string, any>;
+    recursionDepth?: number;
+    maxPagesToScrape?: number;
+    chunkSize?: number;
+    chunkOverlap?: number;
+    skipEmbeddingGeneration?: boolean;
+    enableAutoSync?: boolean;
+    generateSparseVectors?: boolean;
+    prependFilenameToChunks?: boolean;
+    htmlTagsToSkip?: string[];
+    cssClassesToSkip?: string[];
+    cssSelectorsToSkip?: string[];
+    embeddingModel?: TextEmbeddingModel;
+    environment?: Environment;
+}
 export interface SubmitScrapeRequestResponse {
     status: number;
     data: {
