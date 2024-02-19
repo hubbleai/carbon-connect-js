@@ -350,7 +350,9 @@ fetchUserIntegrations();
   - `maxPagesToScrape` (number, optional): Maximum number of pages to scrape per URL. Defaults to 1.
   - `chunkSize` (number, optional): Size of data chunks. Defaults to 1500.
   - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
-  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during scraping. Defaults to false.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during scraping.
+    Defaults to false.
+  - `embeddingModel` (TextEmbeddingModel, optional): Embedding model used to generate embeddings
 
 - **Returns**: A promise that resolves to a `SubmitScrapeRequestResponse` object:
 
@@ -1135,4 +1137,98 @@ fetchUserIntegrations();
   }
 
   revokeDataSourceAccess();
+  ```
+
+### 25. submitSitemapScrapeRequest()
+
+- **Description**: Initiates a scraping request for specified sitemap URL.
+
+- **Parameters**: The `submitSitemapScrapeRequest()` method accepts an object with the following properties:
+
+  - `accessToken` (string): The access token obtained through authentication.
+  - `url` (string): URL you want to scrape.
+  - `tags` (object, optional): Tags associated with the scraping request. Defaults to an empty object.
+  - `recursionDepth` (number, optional): Specifies the depth of scraping for linked pages. Defaults to 1.
+  - `maxPagesToScrape` (number, optional): Maximum number of pages to scrape per URL. Defaults to 1.
+  - `chunkSize` (number, optional): Size of data chunks. Defaults to 1500.
+  - `chunkOverlap` (number, optional): Overlapping size between chunks. Defaults to 20.
+  - `skipEmbeddingGeneration` (boolean, optional): Indicates whether to skip embedding generation during scraping.
+    Defaults to false.
+  - `embeddingModel` (TextEmbeddingModel, optional): Embedding model used to generate embeddings
+
+- **Returns**: A promise that resolves to a `SubmitScrapeRequestResponse` object:
+
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object): Contains details of the scraping response.
+  - `error` (string or null): Error message if there's an issue initiating the scraping.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function initiateScraping() {
+    const url = 'URL'; // Replace with your actual URL'
+
+    try {
+      const response = await Carbon.submitSitemapScrapeRequest({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        url: url,
+        recursionDepth: 2,
+        maxPagesToScrape: 5,
+      });
+
+      if (response.status === 200) {
+        console.log('Scraping result:', response.data.files);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err.message);
+    }
+  }
+
+  initiateScraping();
+  ```
+
+### 26. deleteFiles()
+
+- **Description**: This function allows for the removal of a specified files from the Carbon service.
+
+- **Parameters**: The `deleteFiles()` method requires an object with the following properties:
+
+  - `accessToken` (string): The access token obtained through authentication.
+  - `fileIds` (array of strings): The IDs of the files you intend to delete.
+
+- **Returns**: A promise that resolves to an `DeleteFileResponse` object containing the following properties:
+
+  - `status` (number): The HTTP status code of the response.
+  - `data` (object or null): Whether request was successful.
+  - `error` (string or null): An error message in case there is an issue with the file deletion.
+
+- **Usage**:
+
+  ```javascript
+  import * as Carbon from 'carbon-connect-js';
+
+  async function removeFiles() {
+    const fileIds = ['file1', 'file2'];
+
+    try {
+      const response = await Carbon.deleteFiles({
+        accessToken: 'YOUR_ACCESS_TOKEN',
+        fileIds: fileIds,
+      });
+
+      if (response.status === 200) {
+        console.log('File successfully deleted:', response.data);
+      } else {
+        console.error('Error:', response.error);
+      }
+    } catch (err) {
+      console.error('Unexpected error during file deletion:', err.message);
+    }
+  }
+
+  removeFiles();
   ```
