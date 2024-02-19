@@ -551,7 +551,7 @@ const uploadText = async ({
       method: 'POST',
       body: JSON.stringify({
         contents: contents,
-        file_name: fileName,
+        name: fileName,
         chunk_size: chunkSize,
         chunk_overlap: chunkOverlap,
         skip_embedding_generation: skipEmbeddingGeneration,
