@@ -49,62 +49,62 @@ import {
   RevokeAccessToDataSourceResponse,
   DeleteFilesParams,
   SubmitSitemapScrapeRequestParams,
-} from './types';
+} from "./types";
 
 export const allowedFileTypes = [
-  'pdf',
-  'docx',
-  'txt',
-  'csv',
-  'md',
-  'pptx',
-  'tsv',
-  'xlsx',
-  'rtf',
-  'jpg',
-  'jpeg',
-  'png',
-  'mp3',
-  'mp4',
-  'mp2',
-  'aac',
-  'wav',
-  'flac',
-  'pcm',
-  'm4a',
-  'ogg',
-  'opus',
-  'webm',
+  "pdf",
+  "docx",
+  "txt",
+  "csv",
+  "md",
+  "pptx",
+  "tsv",
+  "xlsx",
+  "rtf",
+  "jpg",
+  "jpeg",
+  "png",
+  "mp3",
+  "mp4",
+  "mp2",
+  "aac",
+  "wav",
+  "flac",
+  "pcm",
+  "m4a",
+  "ogg",
+  "opus",
+  "webm",
 ];
 
 export const BASE_URL: Record<string, string> = {
-  PRODUCTION: 'https://api.carbon.ai',
-  DEVELOPMENT: 'https://api.dev.carbon.ai',
-  LOCAL: 'http://localhost:8000',
+  PRODUCTION: "https://api.carbon.ai",
+  DEVELOPMENT: "https://api.dev.carbon.ai",
+  LOCAL: "https://7085-2401-4900-1f32-447e-1921-68c9-40d2-e670.ngrok-free.app",
 };
 
 function pickRelevantIntegrationParams(integrationName: string, params: any) {
   switch (integrationName) {
-    case 'ZENDESK':
+    case "ZENDESK":
       if (!params.zendeskSubdomain) {
         throw new Error(
-          'Zendesk integration requires a zendeskSubdomain parameter.'
+          "Zendesk integration requires a zendeskSubdomain parameter."
         );
       }
       return { zendesk_subdomain: params.zendeskSubdomain };
 
-    case 'CONFLUENCE':
+    case "CONFLUENCE":
       if (!params.confluenceSubdomain) {
         throw new Error(
-          'Confluence integration requires a confluenceSubdomain parameter.'
+          "Confluence integration requires a confluenceSubdomain parameter."
         );
       }
       return { confluence_subdomain: params.confluenceSubdomain };
 
-    case 'SHAREPOINT':
+    case "SHAREPOINT":
       if (!params.microsoftTenant || !params.sharepointSiteName) {
         throw new Error(
-          'Microsoft integration requires both microsoftTenant and sharepointSiteName parameters.'
+          "Microsoft integration requires both microsoftTenant and sharepointSiteName parameters."
         );
       }
       return {
@@ -118,15 +118,15 @@ function pickRelevantIntegrationParams(integrationName: string, params: any) {
 }
 
 const getCarbonHealth = async ({
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: getCarbonHealthParams): Promise<getCarbonHealthResponse> => {
   try {
     const carbonHealthResponse = await fetch(
       `${BASE_URL[environment]}/health`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -150,17 +150,17 @@ const getCarbonHealth = async ({
 const generateAccessToken = async ({
   apiKey,
   customerId,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: AccessTokenParams): Promise<AccessTokenResponse> => {
   try {
     const accessTokenResponse = await fetch(
       `${BASE_URL[environment]}/auth/v1/access_token`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           authorization: `Bearer ${apiKey}`,
-          'customer-id': customerId,
+          "customer-id": customerId,
         },
       }
     );
@@ -177,29 +177,29 @@ const generateAccessToken = async ({
       return {
         status: accessTokenResponse.status,
         data: null,
-        error: responseData.error || 'Unexpected error occurred.',
+        error: responseData.error || "Unexpected error occurred.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error generating access token. Please try again.',
+      error: "Error generating access token. Please try again.",
     };
   }
 };
 
 const getWhiteLabelData = async ({
   accessToken,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: WhiteLabelDataParams): Promise<WhiteLabelDataResponse> => {
   try {
     const whiteLabelingResponse = await fetch(
       `${BASE_URL[environment]}/auth/v1/white_labeling`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           authorization: `Token ${accessToken}`,
         },
       }
@@ -216,27 +216,27 @@ const getWhiteLabelData = async ({
       return {
         status: whiteLabelingResponse.status,
         data: null,
-        error: whiteLabelingResponseData.error || 'Unexpected error occurred.',
+        error: whiteLabelingResponseData.error || "Unexpected error occurred.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching white labeling data. Please try again.',
+      error: "Error fetching white labeling data. Please try again.",
     };
   }
 };
 
 const getUserConnections = async ({
   accessToken,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: UserConnectionsParams): Promise<UserConnectionsResponse> => {
   try {
     const userIntegrationsResponse = await fetch(
       `${BASE_URL[environment]}/integrations/`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
         },
@@ -245,7 +245,7 @@ const getUserConnections = async ({
 
     if (userIntegrationsResponse.status === 200) {
       const responseBody = await userIntegrationsResponse.json();
-      const userConnections: any = responseBody['active_integrations'];
+      const userConnections: any = responseBody["active_integrations"];
 
       return {
         connections: userConnections,
@@ -256,7 +256,7 @@ const getUserConnections = async ({
       return {
         connections: [],
         error: {
-          message: 'Failed to fetch user connections.',
+          message: "Failed to fetch user connections.",
         },
         status: userIntegrationsResponse.status,
       };
@@ -265,7 +265,7 @@ const getUserConnections = async ({
     return {
       connections: [],
       error: {
-        message: error.message || 'Failed to fetch user connections.',
+        message: error.message || "Failed to fetch user connections.",
       },
       status: 400,
     };
@@ -280,10 +280,10 @@ const generateOauthurl = async ({
   skipEmbeddingGeneration = false,
   tags = {},
   optionalParams = {},
-  embeddingModel = 'OPENAI',
+  embeddingModel = "OPENAI",
   generateSparseVectors = false,
   prependFilenameToChunks = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GenerateOAuthURLParams): Promise<GenerateOAuthURLResponse> => {
   try {
     const requestBody = {
@@ -301,9 +301,9 @@ const generateOauthurl = async ({
     const oAuthURLResponse = await fetch(
       `${BASE_URL[environment]}/integrations/oauth_url`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           authorization: `Token ${accessToken}`,
         },
         body: JSON.stringify(requestBody),
@@ -328,14 +328,14 @@ const generateOauthurl = async ({
       return {
         status: 400,
         data: null,
-        error: 'Error generating OAuth URL. Please try again.',
+        error: "Error generating OAuth URL. Please try again.",
       };
     }
   } catch (err: any) {
     return {
       status: 400,
       data: null,
-      error: err?.message || 'Error generating OAuth URL. Please try again.',
+      error: err?.message || "Error generating OAuth URL. Please try again.",
     };
   }
 };
@@ -347,11 +347,11 @@ const uploadFiles = async ({
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   setPageAsBoundary = false,
-  embeddingModel = 'OPENAI',
+  embeddingModel = "OPENAI",
   useOCR = false,
   generateSparseVectors = false,
   prependFilenameToChunks = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: UploadFilesParams): Promise<UploadFilesResponse> => {
   try {
     if (files.length === 0) {
@@ -361,7 +361,7 @@ const uploadFiles = async ({
           successfulUploads: [],
         },
         error: {
-          message: 'Please provide atleast a file to upload',
+          message: "Please provide atleast a file to upload",
           count: 0,
           failedUploads: [],
         },
@@ -376,9 +376,9 @@ const uploadFiles = async ({
       files.map(async (file, index) => {
         try {
           const formData = new FormData();
-          formData.append('file', file);
+          formData.append("file", file);
 
-          const fileType = file.name.split('.').pop();
+          const fileType = file.name.split(".").pop();
 
           const isFileSupport = allowedFileTypes.find(
             (configuredType: string) => configuredType === fileType
@@ -391,31 +391,31 @@ const uploadFiles = async ({
 
           const apiUrl = new URL(`${BASE_URL[environment]}/uploadfile`);
 
-          apiUrl.searchParams.append('chunk_size', chunkSize.toString());
-          apiUrl.searchParams.append('chunk_overlap', chunkOverlap.toString());
+          apiUrl.searchParams.append("chunk_size", chunkSize.toString());
+          apiUrl.searchParams.append("chunk_overlap", chunkOverlap.toString());
           apiUrl.searchParams.append(
-            'skip_embedding_generation',
+            "skip_embedding_generation",
             skipEmbeddingGeneration.toString()
           );
           apiUrl.searchParams.append(
-            'set_page_as_boundary',
+            "set_page_as_boundary",
             setPageAsBoundary.toString()
           );
-          apiUrl.searchParams.append('embedding_model', embeddingModel);
-          apiUrl.searchParams.append('use_ocr', useOCR.toString());
+          apiUrl.searchParams.append("embedding_model", embeddingModel);
+          apiUrl.searchParams.append("use_ocr", useOCR.toString());
           apiUrl.searchParams.append(
-            'generate_sparse_vectors',
+            "generate_sparse_vectors",
             generateSparseVectors.toString()
           );
           apiUrl.searchParams.append(
-            'prepend_filename_to_chunks',
+            "prepend_filename_to_chunks",
             prependFilenameToChunks.toString()
           );
           const uploadResponse = await fetch(
             // `${BASE_URL[environment]}/uploadfile?chunk_size=${chunkSize}&chunk_overlap=${chunkOverlap}&skip_embedding_generation=${skipEmbeddingGeneration}&set_page_as_boundary=${setPageAsBoundary}&embedding_model=${embeddingModel}&use_ocr=${useOCR}&generate_sparse_vectors=${generateSparseVectors}`,
             apiUrl.toString(),
             {
-              method: 'POST',
+              method: "POST",
               body: formData,
               headers: {
                 Authorization: `Token ${accessToken}`,
@@ -431,13 +431,13 @@ const uploadFiles = async ({
 
             failedUploads.push({
               fileName: file.name,
-              message: errorData.message || 'Failed to upload file.',
+              message: errorData.message || "Failed to upload file.",
             });
           }
         } catch (error: any) {
           failedUploads.push({
             fileName: file.name,
-            message: error.message || 'Failed to upload file.',
+            message: error.message || "Failed to upload file.",
           });
         }
       })
@@ -446,7 +446,7 @@ const uploadFiles = async ({
     let errorObject = null;
     if (failedUploads.length > 0) {
       errorObject = {
-        message: 'Failed to upload some files.',
+        message: "Failed to upload some files.",
         count: failedUploads.length,
         failedUploads,
       };
@@ -466,7 +466,7 @@ const uploadFiles = async ({
         successfulUploads: [],
       },
       error: {
-        message: error.message || 'Failed to upload files.',
+        message: error.message || "Failed to upload files.",
         count: files.length,
         failedUploads: files.map((file) => file.name),
       },
@@ -478,20 +478,20 @@ const uploadFiles = async ({
 const uploadFileFromUrl = async ({
   accessToken,
   url,
-  fileName = '',
+  fileName = "",
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
-  embeddingModel = 'OPENAI',
+  embeddingModel = "OPENAI",
   generateSparseVectors = false,
   prependFilenameToChunks = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: UploadFileFromUrlParams): Promise<UploadFileFromUrlResponse> => {
   try {
     const uploadResponse = await fetch(
       `${BASE_URL[environment]}/upload_file_from_url`,
       {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           url: url,
           file_name: fileName,
@@ -504,7 +504,7 @@ const uploadFileFromUrl = async ({
         }),
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -522,14 +522,14 @@ const uploadFileFromUrl = async ({
       return {
         status: uploadResponse.status,
         data: null,
-        error: 'Failed to upload file.',
+        error: "Failed to upload file.",
       };
     }
   } catch (error) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to upload file.',
+      error: "Failed to upload file.",
     };
   }
 };
@@ -537,18 +537,18 @@ const uploadFileFromUrl = async ({
 const uploadText = async ({
   accessToken,
   contents,
-  fileName = '',
+  fileName = "",
   chunkSize = 1500,
   chunkOverlap = 20,
   skipEmbeddingGeneration = false,
   overWriteFileId = null,
-  embeddingModel = 'OPENAI',
+  embeddingModel = "OPENAI",
   generateSparseVectors = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: UploadTextParams): Promise<UploadTextResponse> => {
   try {
     const uploadResponse = await fetch(`${BASE_URL[environment]}/upload_text`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         contents: contents,
         name: fileName,
@@ -561,7 +561,7 @@ const uploadText = async ({
       }),
       headers: {
         Authorization: `Token ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -578,14 +578,14 @@ const uploadText = async ({
       return {
         status: uploadResponse.status,
         data: null,
-        error: 'Failed to upload text.',
+        error: "Failed to upload text.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to upload text.',
+      error: "Failed to upload text.",
     };
   }
 };
@@ -596,16 +596,16 @@ const uploadText = async ({
 const deleteFile = async ({
   accessToken,
   fileId,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: DeleteFileParams): Promise<DeleteFileResponse> => {
   try {
     const deleteFileResponse = await fetch(
       `${BASE_URL[environment]}/deletefile/${fileId}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -621,14 +621,14 @@ const deleteFile = async ({
       return {
         status: deleteFileResponse.status,
         data: null,
-        error: 'Failed to delete file.',
+        error: "Failed to delete file.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to delete file.',
+      error: "Failed to delete file.",
     };
   }
 };
@@ -636,19 +636,19 @@ const deleteFile = async ({
 const deleteFiles = async ({
   accessToken,
   fileIds,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: DeleteFilesParams): Promise<DeleteFileResponse> => {
   try {
     const deleteFileResponse = await fetch(
       `${BASE_URL[environment]}/delete_files`,
       {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           file_ids: fileIds,
         }),
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -664,14 +664,14 @@ const deleteFiles = async ({
       return {
         status: deleteFileResponse.status,
         data: null,
-        error: 'Failed to delete file.',
+        error: "Failed to delete file.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to delete file.',
+      error: "Failed to delete file.",
     };
   }
 };
@@ -681,16 +681,16 @@ const resyncFile = async ({
   fileId,
   chunkSize = 1500,
   chunkOverlap = 20,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: ResyncFileParams): Promise<ResyncFileResponse> => {
   try {
     const resyncFileResponse = await fetch(
       `${BASE_URL[environment]}/resync_file`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           file_id: fileId,
@@ -711,14 +711,14 @@ const resyncFile = async ({
       return {
         status: resyncFileResponse.status,
         data: null,
-        error: 'Failed to resync file.',
+        error: "Failed to resync file.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to resync file.',
+      error: "Failed to resync file.",
     };
   }
 };
@@ -726,16 +726,16 @@ const resyncFile = async ({
 const getRawFilePresignedUrl = async ({
   accessToken,
   fileId,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetRawFilePresignedUrlParams): Promise<GetRawFilePresignedUrlResponse> => {
   try {
     const getRawFilePresignedUrlResponse = await fetch(
       `${BASE_URL[environment]}/raw_file/${fileId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -752,14 +752,14 @@ const getRawFilePresignedUrl = async ({
       return {
         status: getRawFilePresignedUrlResponse.status,
         data: null,
-        error: 'Failed to get raw file presigned url.',
+        error: "Failed to get raw file presigned url.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to get raw file presigned url.',
+      error: "Failed to get raw file presigned url.",
     };
   }
 };
@@ -767,16 +767,16 @@ const getRawFilePresignedUrl = async ({
 const getParsedFilePresignedUrl = async ({
   accessToken,
   fileId,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetParsedFilePresignedUrlParams): Promise<GetParsedFilePresignedUrlResponse> => {
   try {
     const getParsedFilePresignedUrlResponse = await fetch(
       `${BASE_URL[environment]}/parsed_file/${fileId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -793,14 +793,14 @@ const getParsedFilePresignedUrl = async ({
       return {
         status: getParsedFilePresignedUrlResponse.status,
         data: null,
-        error: 'Failed to get parsed file presigned url.',
+        error: "Failed to get parsed file presigned url.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to get parsed file presigned url.',
+      error: "Failed to get parsed file presigned url.",
     };
   }
 };
@@ -809,12 +809,12 @@ const getUserFiles = async ({
   accessToken,
   limit = 10,
   offset = 0,
-  order_by = 'updated_at',
-  order_dir = 'asc',
+  order_by = "updated_at",
+  order_dir = "asc",
   filters = {},
   include_raw_file = false,
   include_parsed_file = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetUserFilesParams): Promise<GetUserFilesResponse> => {
   try {
     const requestBody = {
@@ -828,10 +828,10 @@ const getUserFiles = async ({
     const getUserFilesResponse = await fetch(
       `${BASE_URL[environment]}/user_files_v2`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       }
@@ -848,14 +848,14 @@ const getUserFiles = async ({
       return {
         status: getUserFilesResponse.status,
         data: null,
-        error: 'Failed to get user files.',
+        error: "Failed to get user files.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to get user files.',
+      error: "Failed to get user files.",
     };
   }
 };
@@ -864,18 +864,18 @@ const updateTags = async ({
   accessToken,
   fileId,
   tags,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: UpdateTagsParams): Promise<UpdateTagsResponse> => {
   const appendTagsResponse = await fetch(
     `${BASE_URL[environment]}/create_user_file_tags`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         tags: tags,
         organization_user_file_id: fileId,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Token ${accessToken}`,
       },
     }
@@ -892,7 +892,7 @@ const updateTags = async ({
     return {
       status: 400,
       data: null,
-      error: 'Failed to add tags to the file.',
+      error: "Failed to add tags to the file.",
     };
   }
 };
@@ -901,19 +901,19 @@ const deleteTags = async ({
   accessToken,
   organizationUserFileId,
   tags = [],
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: DeleteTagsParams): Promise<DeleteTagsResponse> => {
   try {
     const deleteTagsResponse = await fetch(
       `${BASE_URL[environment]}/delete_user_file_tags`,
       {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           tags: tags,
           organization_user_file_id: organizationUserFileId,
         }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Token ${accessToken}`,
         },
       }
@@ -930,14 +930,14 @@ const deleteTags = async ({
       return {
         status: 400,
         data: null,
-        error: 'Failed to delete tags from the file.',
+        error: "Failed to delete tags from the file.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Failed to delete tags from the file.',
+      error: "Failed to delete tags from the file.",
     };
   }
 };
@@ -945,24 +945,24 @@ const deleteTags = async ({
 const processSitemapUrl = async ({
   accessToken,
   sitemapUrl,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: ProcessSitemapUrlParams): Promise<ProcessSitemapUrlResponse> => {
   try {
     if (!sitemapUrl) {
       return {
         status: 400,
         data: null,
-        error: 'Please provide a valid sitemap URL.',
+        error: "Please provide a valid sitemap URL.",
       };
     }
 
     const response = await fetch(
       `${BASE_URL[environment]}/process_sitemap?url=${sitemapUrl}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -981,14 +981,14 @@ const processSitemapUrl = async ({
       return {
         status: 400,
         data: null,
-        error: 'Error fetching sitemap. Please try again.',
+        error: "Error fetching sitemap. Please try again.",
       };
     }
   } catch (error) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching sitemap. Please try again.',
+      error: "Error fetching sitemap. Please try again.",
     };
   }
 };
@@ -996,16 +996,16 @@ const processSitemapUrl = async ({
 const fetchUrls = async ({
   accessToken,
   url,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetUrlsFromWebPageParams): Promise<GetUrlsFromWebPageResponse> => {
   try {
     const response = await fetch(
       `${BASE_URL[environment]}/fetch_urls?url=${url}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -1024,14 +1024,14 @@ const fetchUrls = async ({
       return {
         status: 400,
         data: null,
-        error: 'Error fetching urls. Please try again.',
+        error: "Error fetching urls. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching urls. Please try again.',
+      error: "Error fetching urls. Please try again.",
     };
   }
 };
@@ -1039,16 +1039,16 @@ const fetchUrls = async ({
 const searchUrls = async ({
   accessToken,
   query,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: SearchUrlsForQueryParams): Promise<SearchUrlsForQueryResponse> => {
   try {
     const response = await fetch(
       `${BASE_URL[environment]}/search_urls?query=${query}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -1067,14 +1067,14 @@ const searchUrls = async ({
       return {
         status: 400,
         data: null,
-        error: 'Error searching urls. Please try again.',
+        error: "Error searching urls. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error searching urls. Please try again.',
+      error: "Error searching urls. Please try again.",
     };
   }
 };
@@ -1083,16 +1083,16 @@ const fetchYoutubeTranscript = async ({
   accessToken,
   videoId,
   raw = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: FetchYoutubeTranscriptsParams): Promise<FetchYoutubeTranscriptsResponse> => {
   try {
     const response = await fetch(
       `${BASE_URL[environment]}/fetch_youtube_transcript?video_id=${videoId}&raw=${raw}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -1108,14 +1108,14 @@ const fetchYoutubeTranscript = async ({
       return {
         status: 400,
         data: null,
-        error: 'Error fetching transcript. Please try again.',
+        error: "Error fetching transcript. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching transcript. Please try again.',
+      error: "Error fetching transcript. Please try again.",
     };
   }
 };
@@ -1133,7 +1133,7 @@ const submitScrapeRequest = async (
       chunkSize = 1500,
       chunkOverlap = 20,
       skipEmbeddingGeneration = false,
-      environment = 'PRODUCTION',
+      environment = "PRODUCTION",
       enableAutoSync = false,
       generateSparseVectors = false,
       prependFilenameToChunks = false,
@@ -1144,13 +1144,13 @@ const submitScrapeRequest = async (
     } = params;
 
     const urlPattern = new RegExp(
-      '^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i'
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
     ); // fragment locator
 
     let validUrls = urls.filter((url) => urlPattern.test(url));
@@ -1159,7 +1159,7 @@ const submitScrapeRequest = async (
       return {
         status: 400,
         data: null,
-        error: 'Please provide at least one valid URL.',
+        error: "Please provide at least one valid URL.",
       };
     }
 
@@ -1181,10 +1181,10 @@ const submitScrapeRequest = async (
     }));
 
     const uploadResponse = await fetch(`${BASE_URL[environment]}/web_scrape`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Token ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(requestObject),
     });
@@ -1202,14 +1202,14 @@ const submitScrapeRequest = async (
       return {
         status: uploadResponse.status,
         data: null,
-        error: 'Error initiating scraping. Please try again.',
+        error: "Error initiating scraping. Please try again.",
       };
     }
   } catch (error) {
     return {
       status: 400,
       data: null,
-      error: 'Error initiating scraping. Please try again.',
+      error: "Error initiating scraping. Please try again.",
     };
   }
 };
@@ -1227,7 +1227,7 @@ const submitSitemapScrapeRequest = async (
       chunkSize = 1500,
       chunkOverlap = 20,
       skipEmbeddingGeneration = false,
-      environment = 'PRODUCTION',
+      environment = "PRODUCTION",
       enableAutoSync = false,
       generateSparseVectors = false,
       prependFilenameToChunks = false,
@@ -1238,20 +1238,20 @@ const submitSitemapScrapeRequest = async (
     } = params;
 
     const urlPattern = new RegExp(
-      '^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i'
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
     ); // fragment locator
 
     if (!urlPattern.test(url)) {
       return {
         status: 400,
         data: null,
-        error: 'Please provide a valid URL.',
+        error: "Please provide a valid URL.",
       };
     }
 
@@ -1273,10 +1273,10 @@ const submitSitemapScrapeRequest = async (
     };
 
     const response = await fetch(`${BASE_URL[environment]}/scrape_sitemap`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Token ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(requestObject),
     });
@@ -1292,14 +1292,14 @@ const submitSitemapScrapeRequest = async (
       return {
         status: response.status,
         data: null,
-        error: 'Error initiating scraping. Please try again.',
+        error: "Error initiating scraping. Please try again.",
       };
     }
   } catch (error) {
     return {
       status: 400,
       data: null,
-      error: 'Error initiating scraping. Please try again.',
+      error: "Error initiating scraping. Please try again.",
     };
   }
 };
@@ -1317,14 +1317,14 @@ const getEmbeddings = async ({
   includeVectors = null,
   hybridSearch = null,
   hybridSearchTuningParameters = null,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetEmbeddingsParams): Promise<GetEmbeddingsResponse> => {
   try {
     const requestObject = {
       query,
       query_vector: queryVector,
       k,
-      files_ids: filesIds,
+      file_ids: filesIds,
       parent_file_ids: parentFileIds,
       tags,
       include_tags: includeTags,
@@ -1337,10 +1337,10 @@ const getEmbeddings = async ({
     const embeddingsResponse = await fetch(
       `${BASE_URL[environment]}/embeddings`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestObject),
       }
@@ -1357,14 +1357,15 @@ const getEmbeddings = async ({
       return {
         status: embeddingsResponse.status,
         data: null,
-        error: 'Error fetching embeddings. Please try again.',
+        error: "Error fetching embeddings. Please try again.",
       };
     }
   } catch (err) {
+    console.log(err);
     return {
       status: 400,
       data: null,
-      error: 'Error fetching embeddings. Please try again.',
+      error: "Error fetching embeddings. Please try again.",
     };
   }
 };
@@ -1374,10 +1375,10 @@ const getTextChunks = async ({
   userFileId,
   limit = 10,
   offset = 0,
-  orderBy = 'updated_at',
-  orderDir = 'asc',
+  orderBy = "updated_at",
+  orderDir = "asc",
   includeVectors = false,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetTextChunksParams): Promise<GetTextChunksResponse> => {
   try {
     const requestBody = {
@@ -1393,10 +1394,10 @@ const getTextChunks = async ({
     const techChunksResponse = await fetch(
       `${BASE_URL[environment]}/text_chunks`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       }
@@ -1413,14 +1414,14 @@ const getTextChunks = async ({
       return {
         status: techChunksResponse.status,
         data: null,
-        error: 'Error fetching text chunks. Please try again.',
+        error: "Error fetching text chunks. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching text chunks. Please try again.',
+      error: "Error fetching text chunks. Please try again.",
     };
   }
 };
@@ -1429,12 +1430,12 @@ const getUserDataSources = async ({
   accessToken,
   limit = 10,
   offset = 0,
-  orderBy = 'updated_at',
-  orderDir = 'asc',
+  orderBy = "updated_at",
+  orderDir = "asc",
   sourceType = null,
   sourceIds = null,
   revokedAccess = null,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: GetUserDataSourcesParams): Promise<GetUserDataSourcesResponse> => {
   try {
     const requestBody = {
@@ -1451,10 +1452,10 @@ const getUserDataSources = async ({
     const userDataSourcesResponse = await fetch(
       `${BASE_URL[environment]}/user_data_sources`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       }
@@ -1471,14 +1472,14 @@ const getUserDataSources = async ({
       return {
         status: userDataSourcesResponse.status,
         data: null,
-        error: 'Error fetching user data sources. Please try again.',
+        error: "Error fetching user data sources. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error fetching user data sources. Please try again.',
+      error: "Error fetching user data sources. Please try again.",
     };
   }
 };
@@ -1486,7 +1487,7 @@ const getUserDataSources = async ({
 const revokeAccessToDataSource = async ({
   accessToken,
   dataSourceId,
-  environment = 'PRODUCTION',
+  environment = "PRODUCTION",
 }: RevokeAccessToDataSourceParams): Promise<RevokeAccessToDataSourceResponse> => {
   try {
     const requestBody = {
@@ -1496,10 +1497,10 @@ const revokeAccessToDataSource = async ({
     const revokeAccessResponse = await fetch(
       `${BASE_URL[environment]}/revoke_access_token`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Token ${accessToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       }
@@ -1516,14 +1517,14 @@ const revokeAccessToDataSource = async ({
       return {
         status: revokeAccessResponse.status,
         data: null,
-        error: 'Error revoking access to data source. Please try again.',
+        error: "Error revoking access to data source. Please try again.",
       };
     }
   } catch (err) {
     return {
       status: 400,
       data: null,
-      error: 'Error revoking access to data source. Please try again.',
+      error: "Error revoking access to data source. Please try again.",
     };
   }
 };
